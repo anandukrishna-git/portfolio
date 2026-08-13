@@ -1,0 +1,10 @@
+Place your resume PDF in this folder with the exact filename:
+
+    Anandu_Krishna_VP_Python_Developer_Resume.pdf
+
+The site's "View Resume" and "Download Resume" buttons (in the nav, hero,
+and contact section) all link to:
+
+    assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf
+
+Once you add the real file here, delete this placeholder note.

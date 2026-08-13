@@ -1,0 +1,41 @@
+/* ==========================================================================
+   ANIMATIONS — keyframes + reusable motion utility classes
+   GSAP handles orchestration in js/animations.js; this file holds
+   pure-CSS keyframes and small stateful transitions.
+   ========================================================================== */
+
+@keyframes float-slow{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-14px);}
+}
+.float{animation:float-slow 6s ease-in-out infinite;}
+
+@keyframes spin-slow{
+  from{transform:translate(-50%,-50%) rotate(0deg);}
+  to{transform:translate(-50%,-50%) rotate(360deg);}
+}
+.orbit-ring.r1{animation:spin-slow 40s linear infinite;}
+.orbit-ring.r2{animation:spin-slow 60s linear infinite reverse;}
+.orbit-ring.r3{animation:spin-slow 90s linear infinite;}
+
+@keyframes shimmer{
+  0%{background-position:-200% 0;}
+  100%{background-position:200% 0;}
+}
+
+.magnetic{will-change:transform;}
+
+@keyframes egg-line-in{
+  from{opacity:0;transform:translateX(-6px);}
+  to{opacity:1;transform:translateX(0);}
+}
+#egg.open .line{animation:egg-line-in .35s var(--ease-out) forwards;}
+
+.fade-in{transition:opacity .6s var(--ease-out);}
+
+/* Theme transition ripple */
+.theme-ripple{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:9997;
+  background:var(--background);
+  transform:translate(-50%,-50%) scale(0);
+}
