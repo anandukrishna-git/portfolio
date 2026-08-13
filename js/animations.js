@@ -1,67 +1,57 @@
 /* ==========================================================================
-   animations.js — GSAP + ScrollTrigger orchestration
+   animations.js — lightweight vanilla-JS motion (no external dependencies)
    ========================================================================== */
 (function () {
   document.addEventListener('DOMContentLoaded', () => {
-    if (typeof gsap === 'undefined') return;
-    gsap.registerPlugin(ScrollTrigger);
-
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      gsap.set('.reveal', { opacity: 1, y: 0 });
-      return;
+
+    /* ---------------- Reveal-on-scroll ---------------- */
+    const revealEls = document.querySelectorAll('.reveal');
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      // No animation support / preference: just show everything immediately.
+      revealEls.forEach(el => el.classList.add('in-view'));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      revealEls.forEach(el => observer.observe(el));
     }
 
-    // Hero name line reveal — runs once loader finishes (triggered from main.js via event)
-    document.addEventListener('portfolio:loaded', () => {
-      gsap.set('.hero-name .line span', { yPercent: 110 });
-      gsap.timeline({ delay: 0.15 })
-        .to('.hero-name .line span', {
-          yPercent: 0, duration: 1.1, stagger: 0.12, ease: 'power4.out'
-        })
-        .from('.hero-status', { opacity: 0, y: 10, duration: 0.6, ease: 'power2.out' }, '-=0.7')
-        .from('.hero-role, .hero-desc', { opacity: 0, y: 14, duration: 0.7, stagger: 0.1, ease: 'power2.out' }, '-=0.6')
-        .from('.hero-cta .btn', { opacity: 0, y: 14, duration: 0.6, stagger: 0.08, ease: 'power2.out' }, '-=0.5')
-        .from('.hero-socials a', { opacity: 0, duration: 0.5, stagger: 0.06 }, '-=0.4')
-        .from('.hero-meta > div', { opacity: 0, x: 14, duration: 0.6, stagger: 0.08, ease: 'power2.out' }, '-=0.6');
-    });
+    /* ---------------- Hero entrance ---------------- */
+    const hero = document.getElementById('hero');
+    function showHero() {
+      hero?.classList.add('in');
+    }
+    if (prefersReducedMotion) {
+      showHero();
+    } else {
+      document.addEventListener('portfolio:loaded', showHero, { once: true });
+      // Fallback in case the loader event never fires (e.g. loader markup missing)
+      setTimeout(showHero, 2500);
+    }
 
-    // Generic reveal-on-scroll for elements with .reveal
-    gsap.utils.toArray('.reveal').forEach((el, i) => {
-      gsap.fromTo(el, { opacity: 0, y: 28 }, {
-        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
-      });
-    });
-
-    // Timeline progress line
+    /* ---------------- Timeline progress line ---------------- */
     const timeline = document.querySelector('.timeline');
     const timelineProgress = document.getElementById('timeline-progress');
     if (timeline && timelineProgress) {
-      gsap.to(timelineProgress, {
-        height: '100%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: timeline,
-          start: 'top 65%',
-          end: 'bottom 75%',
-          scrub: 0.6
-        }
-      });
+      function updateTimelineProgress() {
+        const rect = timeline.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const start = vh * 0.75;
+        const end = vh * 0.25;
+        const total = rect.height + (start - end);
+        const traveled = start - rect.top;
+        const pct = Math.max(0, Math.min(1, traveled / total));
+        timelineProgress.style.height = (pct * 100) + '%';
+      }
+      window.addEventListener('scroll', updateTimelineProgress, { passive: true });
+      window.addEventListener('resize', updateTimelineProgress);
+      updateTimelineProgress();
     }
-
-    // Orbit nodes gentle stagger-in
-    gsap.from('.orbit-node', {
-      opacity: 0, scale: 0.6, duration: 0.6, stagger: 0.06, ease: 'back.out(1.7)',
-      scrollTrigger: { trigger: '#skill-orbit', start: 'top 80%', once: true }
-    });
-
-    // Section eyebrow subtle parallax
-    gsap.utils.toArray('.section-title').forEach(title => {
-      gsap.fromTo(title, { backgroundPositionX: '0%' }, {
-        backgroundPositionX: '0%',
-        scrollTrigger: { trigger: title, start: 'top 90%' }
-      });
-    });
   });
 })();

@@ -16,13 +16,13 @@ const projects = [
     image: '',
     case: {
       overview: 'A multi-role platform connecting students, companies and internal staff around project listings, applications and feedback.',
-      problem: 'Placeholder — problem statement to be added.',
-      solution: 'Placeholder — solution approach to be added.',
+      problem: '',
+      solution: '',
       technologies: 'Django, Python, SQLite, HTML5, CSS3, JavaScript.',
       features: 'Project listings, shortlisting workflow, feedback system, 10+ interlinked Django ORM models.',
-      contribution: 'Placeholder — specific individual contribution to be added.',
-      challenges: 'Placeholder — challenges faced to be added.',
-      result: 'Placeholder — outcome/result to be added.'
+      contribution: '',
+      challenges: '',
+      result: ''
     }
   },
   {
@@ -37,13 +37,13 @@ const projects = [
     image: '',
     case: {
       overview: 'A donation platform matching food donors with recipients in need.',
-      problem: 'Placeholder — problem statement to be added.',
-      solution: 'Placeholder — solution approach to be added.',
+      problem: '',
+      solution: '',
       technologies: 'Django, Python, SQLite, Bootstrap, HTML/CSS.',
       features: 'Role-based authentication, donor/recipient CRUD workflows.',
-      contribution: 'Placeholder — specific individual contribution to be added.',
-      challenges: 'Placeholder — challenges faced to be added.',
-      result: 'Placeholder — outcome/result to be added.'
+      contribution: '',
+      challenges: '',
+      result: ''
     }
   },
   {
@@ -58,13 +58,13 @@ const projects = [
     image: '',
     case: {
       overview: 'A communication platform designed with accessibility as the central constraint.',
-      problem: 'Placeholder — problem statement to be added.',
-      solution: 'Placeholder — solution approach to be added.',
+      problem: '',
+      solution: '',
       technologies: 'Django, JavaScript, HTML5, CSS3, Bootstrap.',
       features: 'Mobile-first responsive UI, dynamic form handling, MVT architecture.',
-      contribution: 'Placeholder — specific individual contribution to be added.',
-      challenges: 'Placeholder — challenges faced to be added.',
-      result: 'Placeholder — outcome/result to be added.'
+      contribution: '',
+      challenges: '',
+      result: ''
     }
   }
 ];
@@ -146,12 +146,14 @@ function openCaseStudy(id) {
     ['08 — Result', p.case.result]
   ];
 
-  const isPlaceholder = t => /placeholder/i.test(t || '');
+  // Only render blocks that actually have content — an unfilled field is
+  // simply omitted rather than shown to visitors as "Placeholder" text.
+  const filledBlocks = blocks.filter(([, text]) => text && text.trim().length > 0);
 
-  document.getElementById('case-body').innerHTML = blocks.map(([label, text]) => `
+  document.getElementById('case-body').innerHTML = filledBlocks.map(([label, text]) => `
     <div class="case-block">
       <h5>${label}</h5>
-      <p class="${isPlaceholder(text) ? 'case-placeholder' : ''}">${escapeHtml(text || 'Not yet provided.')}</p>
+      <p>${escapeHtml(text)}</p>
     </div>
   `).join('') + `
     <div class="case-block" style="border-bottom:1px solid var(--border);display:flex;gap:1rem;flex-wrap:wrap;">

@@ -1,63 +1,49 @@
 /* ==========================================================================
    RESPONSIVE — mobile-first overrides
-   Breakpoints: 1920, 1440, 1024, 768, 480, 320
+   Breakpoints: 1920, 1200, 1024, 860, 768, 480, 340
    ========================================================================== */
 
 /* Large desktop refinement */
 @media (min-width:1920px){
-  .wrap{max-width:1500px;}
-}
-
-/* Laptop */
-@media (max-width:1200px){
-  .hero-grid{grid-template-columns:1.3fr .7fr;}
+  .wrap{max-width:1320px;}
 }
 
 /* Tablet */
 @media (max-width:1024px){
   .nav-links{gap:1.5rem;}
   .about-grid{grid-template-columns:1fr;gap:3rem;}
-  .skills-layout{grid-template-columns:1fr;}
-  .orbit-wrap{max-width:420px;}
   .edu-grid{grid-template-columns:1fr;}
   .project-card{grid-template-columns:1fr;}
   .project-visual{aspect-ratio:16/9;}
-  #hero-canvas{width:72%;opacity:.85;}
 }
 
 /* Mobile nav breakpoint */
 @media (max-width:860px){
   .nav-links{display:none;}
   .nav-toggle{display:flex;}
-  #hero-canvas{width:100%;opacity:.5;mask-image:linear-gradient(to bottom, black 30%, transparent 92%);
-    -webkit-mask-image:linear-gradient(to bottom, black 30%, transparent 92%);}
-  .hero-grid{grid-template-columns:1fr;}
-  .hero-meta{justify-self:start;text-align:left;flex-direction:row;flex-wrap:wrap;gap:2rem;margin-top:2.5rem;}
-  #cursor-dot,#cursor-ring{display:none;}
   .cert-grid{grid-template-columns:1fr;}
-  .about-stats{grid-template-columns:1fr 1fr;}
+  .skills-groups{grid-template-columns:1fr;}
 }
 
 /* Small tablet / large phone */
 @media (max-width:768px){
-  section{padding:4.5rem 0;}
+  section{padding:4rem 0;}
   .hero-cta{flex-direction:column;align-items:flex-start;}
+  .hero-meta{flex-direction:column;gap:1.2rem;}
   .contact-details{gap:2rem;}
   .footer-grid{flex-direction:column;}
   .case-hero{padding:6.5rem 0 2rem;}
+  .about-stats{grid-template-columns:1fr 1fr;gap:.7rem;}
 }
 
 /* Phone */
 @media (max-width:480px){
   .hero-name{font-size:clamp(2.6rem,13vw,3.6rem);}
   .btn{padding:.9rem 1.4rem;font-size:.8rem;}
-  .orbit-node{font-size:.68rem;padding:.4rem .7rem;}
-  .about-stats{grid-template-columns:1fr 1fr;gap:.7rem;}
   .stat-num{font-size:1.7rem;}
   .contact-headline{font-size:clamp(2.2rem,11vw,3.2rem);}
   .social-pill{padding:.65rem 1rem;font-size:.76rem;}
   .mobile-menu a{font-size:1.6rem;}
-  #cmdk-overlay{padding-top:8vh;}
 }
 
 /* Very small phone */
@@ -75,11 +61,4 @@
     scroll-behavior:auto !important;
   }
   .reveal{opacity:1 !important;transform:none !important;}
-}
-
-/* Touch device: never show custom cursor even on wide touch screens */
-@media (hover:none) and (pointer:coarse){
-  #cursor-dot,#cursor-ring{display:none !important;}
-  body{cursor:auto !important;}
-  .has-custom-cursor a,.has-custom-cursor button{cursor:pointer !important;}
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -51,7 +51,7 @@
 }
 </script>
 </head>
-<body class="dark-default">
+<body>
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -63,10 +63,6 @@
 
 <!-- ============ SCROLL PROGRESS ============ -->
 <div id="scroll-progress"></div>
-
-<!-- ============ CUSTOM CURSOR ============ -->
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
 
 <!-- ============ NAVIGATION ============ -->
 <header id="navbar">
@@ -81,10 +77,6 @@
       <a href="#contact" data-nav>Contact</a>
     </nav>
     <div class="nav-right">
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
-      </button>
       <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline" data-nav-resume>Resume</a>
       <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -113,33 +105,28 @@
 
   <!-- ============ HERO ============ -->
   <section id="hero">
-    <canvas id="hero-canvas" aria-hidden="true"></canvas>
     <div class="wrap">
-      <div class="hero-grid">
-        <div class="hero-main">
-          <div class="hero-status"><span class="status-dot"></span> AVAILABLE FOR OPPORTUNITIES</div>
-          <h1 class="hero-name">
-            <span class="line"><span>ANANDU</span></span>
-            <span class="line"><span>KRISHNA</span></span>
-          </h1>
-          <div class="hero-role mono">Python Developer — Django &amp; MVC Web Development</div>
-          <p class="hero-desc">Building practical web applications with Python, Django and modern frontend technologies.</p>
-          <div class="hero-cta">
-            <a href="#projects" class="btn btn-primary magnetic" data-cursor="view">VIEW PROJECTS →</a>
-            <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline magnetic">VIEW RESUME ↗</a>
-            <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" download class="btn btn-ghost magnetic">DOWNLOAD RESUME ↓</a>
-          </div>
-          <div class="hero-socials">
-            <a href="https://github.com/anandukrishna-git" target="_blank" rel="noopener">GITHUB</a>
-            <a href="https://linkedin.com/in/anandukrishnavp88" target="_blank" rel="noopener">LINKEDIN</a>
-            <a href="mailto:anandukrrishna@gmail.com">EMAIL</a>
-          </div>
-        </div>
-        <div class="hero-meta">
-          <div><b>Based in</b>Kozhikode, Kerala, India</div>
-          <div><b>Focus</b>Python · Django · Full Stack</div>
-          <div><b>Currently</b>Intern, Trycode Innovations</div>
-        </div>
+      <div class="hero-status"><span class="status-dot"></span> AVAILABLE FOR OPPORTUNITIES</div>
+      <h1 class="hero-name">
+        <span class="line">ANANDU</span>
+        <span class="line">KRISHNA</span>
+      </h1>
+      <div class="hero-role mono">Python Developer — Django &amp; MVC Web Development</div>
+      <p class="hero-desc">Building practical web applications with Python, Django and modern frontend technologies.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary" data-cursor="view">VIEW PROJECTS →</a>
+        <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline">VIEW RESUME ↗</a>
+        <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" download class="btn btn-ghost">DOWNLOAD RESUME ↓</a>
+      </div>
+      <div class="hero-meta">
+        <div><b>Based in</b>Kozhikode, Kerala, India</div>
+        <div><b>Focus</b>Python · Django · Full Stack</div>
+        <div><b>Currently</b>Intern, Trycode Innovations</div>
+      </div>
+      <div class="hero-socials">
+        <a href="https://github.com/anandukrishna-git" target="_blank" rel="noopener">GITHUB</a>
+        <a href="https://linkedin.com/in/anandukrishnavp88" target="_blank" rel="noopener">LINKEDIN</a>
+        <a href="mailto:anandukrrishna@gmail.com">EMAIL</a>
       </div>
     </div>
     <div class="hero-scroll-cue"><span class="scroll-line"></span>SCROLL</div>
@@ -184,43 +171,34 @@
         <h2 class="section-title">Tools I build with.</h2>
         <p class="section-sub">A working toolkit shaped by real projects — not a list of percentages.</p>
       </div>
-      <div class="skills-layout">
-        <div class="orbit-wrap reveal" id="skill-orbit">
-          <div class="orbit-ring r1"></div>
-          <div class="orbit-ring r2"></div>
-          <div class="orbit-ring r3"></div>
-          <div class="orbit-center">ANANDU</div>
-          <!-- nodes injected by js/main.js -->
+      <div class="skills-groups">
+        <div class="skill-group reveal">
+          <div class="skill-group-head"><h4>Languages</h4><span class="count">03</span></div>
+          <div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">JavaScript</span><span class="skill-tag">SQL</span></div>
         </div>
-        <div class="skills-groups reveal">
-          <div class="skill-group">
-            <div class="skill-group-head"><h4>Languages</h4><span class="count">03</span></div>
-            <div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">JavaScript</span><span class="skill-tag">SQL</span></div>
-          </div>
-          <div class="skill-group">
-            <div class="skill-group-head"><h4>Architecture</h4><span class="count">01</span></div>
-            <div class="skill-tags"><span class="skill-tag">MVC / MVT Architecture</span></div>
-          </div>
-          <div class="skill-group">
-            <div class="skill-group-head"><h4>Frameworks</h4><span class="count">03</span></div>
-            <div class="skill-tags"><span class="skill-tag">Django</span><span class="skill-tag">Django ORM</span><span class="skill-tag">Django REST Framework (fundamentals)</span></div>
-          </div>
-          <div class="skill-group">
-            <div class="skill-group-head"><h4>Frontend</h4><span class="count">05</span></div>
-            <div class="skill-tags"><span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">Bootstrap</span><span class="skill-tag">Responsive Web Design</span><span class="skill-tag">JavaScript</span></div>
-          </div>
-          <div class="skill-group">
-            <div class="skill-group-head"><h4>Database</h4><span class="count">03</span></div>
-            <div class="skill-tags"><span class="skill-tag">SQLite</span><span class="skill-tag">SQL</span><span class="skill-tag">Relational DB Design &amp; Queries</span></div>
-          </div>
-          <div class="skill-group">
-            <div class="skill-group-head"><h4>Concepts</h4><span class="count">05</span></div>
-            <div class="skill-tags"><span class="skill-tag">CRUD Operations</span><span class="skill-tag">Auth &amp; Authorization</span><span class="skill-tag">Form Validation</span><span class="skill-tag">Requirement Analysis</span><span class="skill-tag">Debugging &amp; Testing</span></div>
-          </div>
-          <div class="skill-group">
-            <div class="skill-group-head"><h4>Tools</h4><span class="count">04</span></div>
-            <div class="skill-tags"><span class="skill-tag">Git</span><span class="skill-tag">GitHub</span><span class="skill-tag">VS Code</span><span class="skill-tag">Postman</span></div>
-          </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-head"><h4>Architecture</h4><span class="count">01</span></div>
+          <div class="skill-tags"><span class="skill-tag">MVC / MVT Architecture</span></div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-head"><h4>Frameworks</h4><span class="count">03</span></div>
+          <div class="skill-tags"><span class="skill-tag">Django</span><span class="skill-tag">Django ORM</span><span class="skill-tag">Django REST Framework (fundamentals)</span></div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-head"><h4>Frontend</h4><span class="count">05</span></div>
+          <div class="skill-tags"><span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">Bootstrap</span><span class="skill-tag">Responsive Web Design</span><span class="skill-tag">JavaScript</span></div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-head"><h4>Database</h4><span class="count">03</span></div>
+          <div class="skill-tags"><span class="skill-tag">SQLite</span><span class="skill-tag">SQL</span><span class="skill-tag">Relational DB Design &amp; Queries</span></div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-head"><h4>Concepts</h4><span class="count">05</span></div>
+          <div class="skill-tags"><span class="skill-tag">CRUD Operations</span><span class="skill-tag">Auth &amp; Authorization</span><span class="skill-tag">Form Validation</span><span class="skill-tag">Requirement Analysis</span><span class="skill-tag">Debugging &amp; Testing</span></div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-head"><h4>Tools</h4><span class="count">04</span></div>
+          <div class="skill-tags"><span class="skill-tag">Git</span><span class="skill-tag">GitHub</span><span class="skill-tag">VS Code</span><span class="skill-tag">Postman</span></div>
         </div>
       </div>
       <div class="glass learning-card reveal">
@@ -327,21 +305,18 @@
       <div class="contact-details reveal">
         <div class="contact-item">
           <span>Email</span>
-          <a href="mailto:anandukrrishna@gmail.com" class="magnetic">anandukrrishna@gmail.com</a>
+          <a href="mailto:anandukrrishna@gmail.com">anandukrrishna@gmail.com</a>
         </div>
         <div class="contact-item">
           <span>Phone</span>
-          <a href="tel:+918921303751" class="magnetic">+91 89213 03751</a>
+          <a href="tel:+918921303751">+91 89213 03751</a>
         </div>
       </div>
 
       <div class="contact-socials reveal">
-        <a class="social-pill magnetic" href="https://github.com/anandukrishna-git" target="_blank" rel="noopener">GitHub ↗</a>
-        <a class="social-pill magnetic" href="https://linkedin.com/in/anandukrishnavp88" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <a class="social-pill magnetic" href="#" data-placeholder-link target="_blank" rel="noopener">Instagram ↗</a>
-        <a class="social-pill magnetic" href="#" data-placeholder-link target="_blank" rel="noopener">WhatsApp ↗</a>
-        <a class="social-pill magnetic" href="#" data-placeholder-link target="_blank" rel="noopener">Telegram ↗</a>
-        <a class="social-pill magnetic" href="mailto:anandukrrishna@gmail.com">Gmail ↗</a>
+        <a class="social-pill" href="https://github.com/anandukrishna-git" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="social-pill" href="https://linkedin.com/in/anandukrishnavp88" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="social-pill" href="mailto:anandukrrishna@gmail.com">Email ↗</a>
       </div>
     </div>
   </section>
@@ -397,38 +372,10 @@
   <div class="wrap" id="case-body"><!-- injected by js/projects.js --></div>
 </div>
 
-<!-- ============ COMMAND PALETTE ============ -->
-<div id="cmdk-overlay">
-  <div id="cmdk" role="dialog" aria-modal="true" aria-label="Command palette">
-    <input id="cmdk-input" type="text" placeholder="Search portfolio..." autocomplete="off" spellcheck="false">
-    <div id="cmdk-list" role="listbox"></div>
-    <div class="cmdk-hint"><span>↑↓ navigate</span><span>↵ select</span><span>esc close</span></div>
-  </div>
-</div>
-
-<!-- ============ EASTER EGG ============ -->
-<div id="egg" aria-hidden="true">
-  <div id="egg-box">
-    <div class="line">$ sudo access --portfolio</div>
-    <div class="line">[ok] permission granted.</div>
-    <div class="line">[ok] loading developer mode…</div>
-    <div class="line">"The best code is the code you understand a year later." </div>
-    <div class="line">— Anandu Krishna</div>
-    <button id="egg-close">press esc or click to close</button>
-  </div>
-</div>
-
 <!-- ============ SCRIPTS ============ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/theme.js"></script>
 <script src="js/projects.js"></script>
-<script src="js/three-scene.js"></script>
-<script src="js/cursor.js"></script>
 <script src="js/navigation.js"></script>
 <script src="js/animations.js"></script>
-<script src="js/command-palette.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
