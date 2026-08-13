@@ -88,7 +88,11 @@ function renderProjects() {
   list.innerHTML = projects.map(p => `
     <article class="project-card reveal" data-project="${p.id}" tabindex="0" role="button" aria-label="View case study for ${escapeHtml(p.name)}">
       <div class="project-visual">
-        ${p.image ? `<img src="${p.image}" alt="${escapeHtml(p.name)} preview" loading="lazy">` : `<span class="ph">PREVIEW IMAGE — PLACEHOLDER</span>`}
+        ${p.image ? `<img src="${p.image}" alt="${escapeHtml(p.name)} preview" loading="lazy">` : `
+          <div class="ph">
+            <span class="ph-mark">${escapeHtml(p.name.slice(0, 2).toUpperCase())}</span>
+            <span class="ph-label">Preview coming soon</span>
+          </div>`}
       </div>
       <div class="project-info">
         <span class="project-num mono">${p.number}</span>

@@ -8,6 +8,11 @@
   .wrap{max-width:1320px;}
 }
 
+/* Laptop */
+@media (max-width:1200px){
+  .hero-grid{grid-template-columns:1.3fr .8fr;}
+}
+
 /* Tablet */
 @media (max-width:1024px){
   .nav-links{gap:1.5rem;}
@@ -22,14 +27,16 @@
   .nav-links{display:none;}
   .nav-toggle{display:flex;}
   .cert-grid{grid-template-columns:1fr;}
-  .skills-groups{grid-template-columns:1fr;}
+  .skills-groups{columns:1;}
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-panel{max-width:480px;margin-top:1rem;}
+  #hero::before{width:340px;height:340px;}
 }
 
 /* Small tablet / large phone */
 @media (max-width:768px){
   section{padding:4rem 0;}
   .hero-cta{flex-direction:column;align-items:flex-start;}
-  .hero-meta{flex-direction:column;gap:1.2rem;}
   .contact-details{gap:2rem;}
   .footer-grid{flex-direction:column;}
   .case-hero{padding:6.5rem 0 2rem;}

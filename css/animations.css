@@ -1,33 +1,72 @@
 /* ==========================================================================
-   ANIMATIONS — small, purposeful motion only
-   Reveal-on-scroll lives in style.css (.reveal / .reveal.in-view).
-   This file only holds the hero name entrance.
+   ANIMATIONS — pure CSS + the small IntersectionObserver in js/animations.js
+   No external libraries. Motion is disabled via prefers-reduced-motion
+   in css/responsive.css.
    ========================================================================== */
 
+/* ---------------- Hero entrance ---------------- */
 .hero-name .line{
   opacity:0;
-  transform:translateY(24px);
+  transform:translateY(26px);
   transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);
 }
-.hero-name .line:nth-child(2){transition-delay:.08s;}
 #hero.in .hero-name .line{opacity:1;transform:translateY(0);}
+#hero.in .hero-name .line:nth-child(2){transition-delay:.08s;}
 
-.hero-status,.hero-role,.hero-desc,.hero-cta,.hero-meta,.hero-socials{
+.hero-status,.hero-role,.hero-desc,.hero-cta,.hero-socials,.hero-panel{
   opacity:0;
-  transform:translateY(14px);
+  transform:translateY(16px);
   transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);
 }
 #hero.in .hero-status{transition-delay:.18s;}
 #hero.in .hero-role{transition-delay:.26s;}
 #hero.in .hero-desc{transition-delay:.32s;}
 #hero.in .hero-cta{transition-delay:.4s;}
-#hero.in .hero-meta{transition-delay:.46s;}
-#hero.in .hero-socials{transition-delay:.5s;}
+#hero.in .hero-socials{transition-delay:.48s;}
+#hero.in .hero-panel{transition-delay:.3s;}
 #hero.in .hero-status,
 #hero.in .hero-role,
 #hero.in .hero-desc,
 #hero.in .hero-cta,
-#hero.in .hero-meta,
-#hero.in .hero-socials{
+#hero.in .hero-socials,
+#hero.in .hero-panel{
   opacity:1;transform:translateY(0);
 }
+
+/* Terminal panel rows "type in" one at a time */
+.hero-panel-row{
+  opacity:0;transform:translateX(-8px);
+  transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);
+}
+#hero.in .hero-panel-row{opacity:1;transform:translateX(0);}
+#hero.in .hero-panel-row:nth-child(1){transition-delay:.55s;}
+#hero.in .hero-panel-row:nth-child(2){transition-delay:.68s;}
+#hero.in .hero-panel-row:nth-child(3){transition-delay:.81s;}
+#hero.in .hero-panel-row:nth-child(4){transition-delay:.94s;}
+
+/* ---------------- Staggered reveal for repeating card groups ---------------- */
+/* .reveal itself (opacity/translateY + transition) lives in style.css;
+   here we only add per-item delay so groups animate in one after another
+   instead of all at once. */
+.about-stats .stat-card:nth-child(1){transition-delay:.05s;}
+.about-stats .stat-card:nth-child(2){transition-delay:.12s;}
+.about-stats .stat-card:nth-child(3){transition-delay:.19s;}
+.about-stats .stat-card:nth-child(4){transition-delay:.26s;}
+
+.skills-groups .skill-group:nth-child(1){transition-delay:.04s;}
+.skills-groups .skill-group:nth-child(2){transition-delay:.1s;}
+.skills-groups .skill-group:nth-child(3){transition-delay:.16s;}
+.skills-groups .skill-group:nth-child(4){transition-delay:.22s;}
+.skills-groups .skill-group:nth-child(5){transition-delay:.28s;}
+.skills-groups .skill-group:nth-child(6){transition-delay:.34s;}
+.skills-groups .skill-group:nth-child(7){transition-delay:.4s;}
+
+.project-list .project-card:nth-child(1){transition-delay:.05s;}
+.project-list .project-card:nth-child(2){transition-delay:.12s;}
+.project-list .project-card:nth-child(3){transition-delay:.19s;}
+.project-list .project-card:nth-child(4){transition-delay:.26s;}
+
+.cert-grid .cert-card:nth-child(1){transition-delay:.05s;}
+.cert-grid .cert-card:nth-child(2){transition-delay:.11s;}
+.cert-grid .cert-card:nth-child(3){transition-delay:.17s;}
+.cert-grid .cert-card:nth-child(4){transition-delay:.23s;}
