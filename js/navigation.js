@@ -9,6 +9,7 @@
     const mobileMenu = document.getElementById('mobile-menu');
     const navLinks = document.querySelectorAll('[data-nav]');
     const mobileLinks = document.querySelectorAll('[data-nav-mobile]');
+    const mobileMenuAnyLink = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
     const sections = document.querySelectorAll('main section[id]');
 
     // Navbar compact state on scroll
@@ -21,12 +22,14 @@
     // Mobile menu toggle
     function closeMobileMenu() {
       mobileMenu.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
       navToggle.classList.remove('open');
       navToggle.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     }
     function openMobileMenu() {
       mobileMenu.classList.add('open');
+      mobileMenu.setAttribute('aria-hidden', 'false');
       navToggle.classList.add('open');
       navToggle.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
@@ -34,7 +37,8 @@
     navToggle?.addEventListener('click', () => {
       mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
     });
-    mobileLinks.forEach(a => a.addEventListener('click', closeMobileMenu));
+    // Any link inside the mobile menu (section links, socials, resume) closes it
+    mobileMenuAnyLink.forEach(a => a.addEventListener('click', closeMobileMenu));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
     });

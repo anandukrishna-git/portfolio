@@ -2,6 +2,13 @@
    projects.js — single source of truth for project + certification content,
    plus the shared modal system used by both.
    Edit the `projects` / `certifications` arrays below to update content.
+
+   Notes on design intent:
+   - No fake project screenshots or "preview coming soon" placeholders are
+     rendered anywhere. If a project or certification has a real `image`,
+     it is shown; otherwise no image area is rendered at all.
+   - The modal only ever shows fields that actually have content — nothing
+     is invented.
    ========================================================================== */
 
 const projects = [
@@ -17,11 +24,10 @@ const projects = [
     image: '',
     case: {
       overview: 'A multi-role platform connecting students, companies and internal staff around project listings, applications and feedback.',
+      features: 'Project listings, shortlisting workflow, feedback system, 10+ interlinked Django ORM models.',
+      role: '',
       problem: '',
       solution: '',
-      technologies: 'Django, Python, SQLite, HTML5, CSS3, JavaScript.',
-      features: 'Project listings, shortlisting workflow, feedback system, 10+ interlinked Django ORM models.',
-      contribution: '',
       challenges: '',
       result: ''
     }
@@ -38,11 +44,10 @@ const projects = [
     image: '',
     case: {
       overview: 'A donation platform matching food donors with recipients in need.',
+      features: 'Role-based authentication, donor/recipient CRUD workflows.',
+      role: '',
       problem: '',
       solution: '',
-      technologies: 'Django, Python, SQLite, Bootstrap, HTML/CSS.',
-      features: 'Role-based authentication, donor/recipient CRUD workflows.',
-      contribution: '',
       challenges: '',
       result: ''
     }
@@ -59,11 +64,10 @@ const projects = [
     image: '',
     case: {
       overview: 'A communication platform designed with accessibility as the central constraint.',
+      features: 'Mobile-first responsive UI, dynamic form handling, MVT architecture.',
+      role: '',
       problem: '',
       solution: '',
-      technologies: 'Django, JavaScript, HTML5, CSS3, Bootstrap.',
-      features: 'Mobile-first responsive UI, dynamic form handling, MVT architecture.',
-      contribution: '',
       challenges: '',
       result: ''
     }
@@ -103,6 +107,10 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+function initials(str) {
+  return escapeHtml(str.slice(0, 2).toUpperCase());
+}
+
 /* ---------------------------------------------------------------------- */
 /* Rendering: project cards + certification cards                         */
 /* ---------------------------------------------------------------------- */
@@ -111,20 +119,14 @@ function renderProjects() {
   if (!list) return;
   list.innerHTML = projects.map(p => `
     <article class="project-card reveal" data-project="${p.id}" tabindex="0" role="button" aria-label="View case study for ${escapeHtml(p.name)}">
-      <div class="project-visual">
-        ${p.image ? `<img src="${p.image}" alt="${escapeHtml(p.name)} preview" loading="lazy">` : `
-          <div class="ph">
-            <span class="ph-mark">${escapeHtml(p.name.slice(0, 2).toUpperCase())}</span>
-            <span class="ph-label">Preview coming soon</span>
-          </div>`}
-      </div>
+      <span class="project-mark" aria-hidden="true">${initials(p.name)}</span>
       <div class="project-info">
         <span class="project-num mono">${p.number}</span>
         <h3 class="project-name">${escapeHtml(p.name)}</h3>
         <p class="project-desc">${escapeHtml(p.description)}</p>
         <div class="project-tags">${p.tech.map(t => `<span>${escapeHtml(t)}</span>`).join('')}</div>
         <div class="project-actions">
-          <a href="${p.github}" target="_blank" rel="noopener" class="btn btn-outline" data-stop>GitHub ↗</a>
+          ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener" class="btn btn-outline" data-stop>GitHub ↗</a>` : ''}
           ${p.liveDemo ? `<a href="${p.liveDemo}" target="_blank" rel="noopener" class="btn btn-outline" data-stop>Live Demo ↗</a>` : ''}
           <button class="btn btn-ghost" data-stop type="button">View Case Study →</button>
         </div>
@@ -176,10 +178,6 @@ function renderCertifications() {
 /* ---------------------------------------------------------------------- */
 let lastFocusedEl = null;
 
-function closeIconSvg() {
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
-}
-
 function openModal(bodyHtml, triggerEl) {
   const overlay = document.getElementById('modal-overlay');
   const body = document.getElementById('modal-body');
@@ -205,31 +203,28 @@ function closeModal() {
   if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') lastFocusedEl.focus();
 }
 
+/* Project modal — information-focused, no image placeholder, no invented
+   fields. Only fields with real content are rendered. */
 function openProjectModal(id, triggerEl) {
   const p = projects.find(pr => pr.id === id);
   if (!p) return;
 
   const blocks = [
     ['Overview', p.case.overview],
+    ['Key Features', p.case.features],
+    ['My Role', p.case.role],
     ['Problem', p.case.problem],
     ['Solution', p.case.solution],
-    ['Features', p.case.features],
-    ['My Contribution', p.case.contribution],
     ['Challenges', p.case.challenges],
     ['Result', p.case.result]
   ].filter(([, text]) => text && text.trim().length > 0);
 
+  const hasLinks = p.github || p.liveDemo;
+
   const html = `
-    <span class="eyebrow modal-eyebrow">PROJECT ${p.number}</span>
+    <span class="eyebrow modal-eyebrow">Project ${p.number}</span>
     <h3 class="modal-title" id="modal-title">${escapeHtml(p.name)}</h3>
     <p class="modal-tagline">${escapeHtml(p.tagline)}</p>
-    <div class="modal-visual">
-      ${p.image ? `<img src="${p.image}" alt="${escapeHtml(p.name)} preview">` : `
-        <div class="ph">
-          <span class="ph-mark">${escapeHtml(p.name.slice(0, 2).toUpperCase())}</span>
-          <span>Preview coming soon</span>
-        </div>`}
-    </div>
     <div class="modal-tags">${p.tech.map(t => `<span>${escapeHtml(t)}</span>`).join('')}</div>
     ${blocks.map(([label, text]) => `
       <div class="modal-block">
@@ -237,28 +232,27 @@ function openProjectModal(id, triggerEl) {
         <p>${escapeHtml(text)}</p>
       </div>
     `).join('')}
-    <div class="modal-actions">
-      <a href="${p.github}" target="_blank" rel="noopener" class="btn btn-outline">GitHub Repository ↗</a>
-      ${p.liveDemo ? `<a href="${p.liveDemo}" target="_blank" rel="noopener" class="btn btn-primary">Live Demo ↗</a>` : ''}
-    </div>
+    ${hasLinks ? `
+      <div class="modal-actions">
+        ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener" class="btn btn-outline">GitHub ↗</a>` : ''}
+        ${p.liveDemo ? `<a href="${p.liveDemo}" target="_blank" rel="noopener" class="btn btn-primary">Live Demo ↗</a>` : ''}
+      </div>` : ''}
   `;
   openModal(html, triggerEl);
 }
 
+/* Certification modal — shows the real certificate image only if the asset
+   exists; otherwise no image area is rendered at all. */
 function openCertModal(index, triggerEl) {
   const c = certifications[index];
   if (!c) return;
 
   const html = `
-    <span class="eyebrow modal-eyebrow">CERTIFICATION</span>
+    <span class="eyebrow modal-eyebrow">Certification</span>
     <h3 class="modal-title" id="modal-title">${escapeHtml(c.title)}</h3>
-    <div class="modal-visual">
-      ${c.image ? `<img src="${c.image}" alt="${escapeHtml(c.title)} certificate">` : `
-        <div class="ph">
-          <span class="ph-mark">${escapeHtml(c.issuer.slice(0, 2).toUpperCase())}</span>
-          <span>Certificate preview coming soon</span>
-        </div>`}
-    </div>
+    ${c.image
+      ? `<div class="modal-cert-image"><img src="${c.image}" alt="${escapeHtml(c.title)} certificate"></div>`
+      : `<span class="modal-cert-mark" aria-hidden="true">${initials(c.issuer)}</span>`}
     <div class="modal-meta">
       <div><span>Issuer</span><strong>${escapeHtml(c.issuer)}</strong></div>
     </div>

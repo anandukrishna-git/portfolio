@@ -32,7 +32,7 @@
     } else {
       document.addEventListener('portfolio:loaded', showHero, { once: true });
       // Fallback in case the loader event never fires (e.g. loader markup missing)
-      setTimeout(showHero, 2200);
+      setTimeout(showHero, 2000);
     }
 
     /* ---------------- Timeline progress line ---------------- */
