@@ -23,8 +23,10 @@
 
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#08080c">
+<meta name="theme-color" content="#08080b">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/responsive.css">
 <link rel="stylesheet" href="css/animations.css">
@@ -55,9 +57,13 @@
 
 <a href="#main" class="skip-link">Skip to content</a>
 
+<!-- ============ AMBIENT BACKGROUND ============ -->
+<div class="bg-field" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+
 <!-- ============ LOADER ============ -->
 <div id="loader" aria-hidden="true">
-  <div class="loader-name">ANANDU&nbsp;KRISHNA</div>
+  <div class="loader-name mono">ANANDU_KRISHNA.INIT</div>
   <div class="loader-bar"><div class="loader-bar-fill" id="loader-fill"></div></div>
 </div>
 
@@ -67,7 +73,7 @@
 <!-- ============ NAVIGATION ============ -->
 <header id="navbar">
   <div class="wrap nav-inner">
-    <a href="#hero" class="nav-logo">ANANDU<span style="color:var(--accent-2)">.</span></a>
+    <a href="#hero" class="nav-logo">ANANDU<span class="dot">.</span>KRISHNA</a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#about" data-nav>About</a>
       <a href="#skills" data-nav>Skills</a>
@@ -77,8 +83,11 @@
       <a href="#contact" data-nav>Contact</a>
     </nav>
     <div class="nav-right">
-      <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline" data-nav-resume>Resume</a>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" download class="btn btn-outline">
+        Download Resume
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -86,7 +95,7 @@
 </header>
 
 <!-- ============ MOBILE MENU ============ -->
-<div class="mobile-menu" id="mobile-menu">
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
   <nav aria-label="Mobile">
     <a href="#about" data-nav-mobile>About</a>
     <a href="#skills" data-nav-mobile>Skills</a>
@@ -105,6 +114,26 @@
 
   <!-- ============ HERO ============ -->
   <section id="hero">
+    <svg class="hero-schema" viewBox="0 0 640 480" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="schemaGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#7c7fee"/>
+          <stop offset="100%" stop-color="#3fd7c8"/>
+        </linearGradient>
+      </defs>
+      <g class="edge">
+        <path d="M120 90 L300 60 L470 140 M300 60 L280 230 M470 140 L520 300 M280 230 L120 320 M280 230 L470 140 M120 320 L200 420 M470 140 L560 400 M200 420 L520 300"/>
+      </g>
+      <circle class="node node-glow" cx="120" cy="90" r="6"/>
+      <circle class="node node-glow" cx="300" cy="60" r="5"/>
+      <circle class="node node-core node-glow" cx="470" cy="140" r="8"/>
+      <circle class="node node-glow" cx="280" cy="230" r="6"/>
+      <circle class="node node-glow" cx="520" cy="300" r="5"/>
+      <circle class="node node-core node-glow" cx="120" cy="320" r="7"/>
+      <circle class="node node-glow" cx="200" cy="420" r="5"/>
+      <circle class="node node-glow" cx="560" cy="400" r="6"/>
+    </svg>
+
     <div class="wrap">
       <div class="hero-grid">
         <div class="hero-main">
@@ -116,28 +145,38 @@
           <div class="hero-role mono">Python Developer — Django &amp; MVC Web Development</div>
           <p class="hero-desc">Building practical web applications with Python, Django and modern frontend technologies.</p>
           <div class="hero-cta">
-            <a href="#projects" class="btn btn-primary">VIEW PROJECTS →</a>
-            <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline">VIEW RESUME ↗</a>
-            <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" download class="btn btn-ghost">DOWNLOAD RESUME ↓</a>
+            <a href="#projects" class="btn btn-primary">View Projects →</a>
+            <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" download class="btn btn-outline">Download Resume ↓</a>
           </div>
           <div class="hero-socials">
-            <a href="https://github.com/anandukrishna-git" target="_blank" rel="noopener">GITHUB</a>
-            <a href="https://linkedin.com/in/anandukrishnavp88" target="_blank" rel="noopener">LINKEDIN</a>
-            <a href="mailto:anandukrrishna@gmail.com">EMAIL</a>
+            <a href="https://github.com/anandukrishna-git" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://linkedin.com/in/anandukrishnavp88" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="mailto:anandukrrishna@gmail.com">Email</a>
           </div>
         </div>
-        <div class="glass hero-panel" aria-hidden="true">
-          <div class="hero-panel-bar">
-            <span></span><span></span><span></span>
-            <span class="hero-panel-title">whoami.sh</span>
+
+        <div class="glass terminal" aria-hidden="true">
+          <div class="terminal-bar">
+            <span class="dots"><span></span><span></span><span></span></span>
+            <span class="terminal-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="m8 9 3 3-3 3M13 15h3"/></svg>
+              whoami.sh
+            </span>
           </div>
-          <div class="hero-panel-body">
-            <div class="hero-panel-row"><span class="prompt">$</span><span class="key">based_in</span><span class="val">Kozhikode, Kerala, India</span></div>
-            <div class="hero-panel-row"><span class="prompt">$</span><span class="key">focus</span><span class="val">Python · Django · Full Stack</span></div>
-            <div class="hero-panel-row"><span class="prompt">$</span><span class="key">currently</span><span class="val">Intern, Trycode Innovations</span></div>
-            <div class="hero-panel-row"><span class="prompt">$</span><span class="key">status</span><span class="val">Open to opportunities<span class="hero-panel-cursor"></span></span></div>
+          <div class="terminal-body">
+            <div class="terminal-row"><span class="prompt">$</span><span class="key">based_in</span><span class="val">Kozhikode, Kerala, India</span></div>
+            <div class="terminal-row"><span class="prompt">$</span><span class="key">focus</span><span class="val">Python · Django · Full Stack</span></div>
+            <div class="terminal-row"><span class="prompt">$</span><span class="key">currently</span><span class="val">Intern, Trycode Innovations</span></div>
+            <div class="terminal-row"><span class="prompt">$</span><span class="key">status</span><span class="val">Open to opportunities<span class="terminal-cursor"></span></span></div>
           </div>
         </div>
+      </div>
+
+      <div class="stats-row reveal">
+        <div class="stat-cell"><span class="stat-num">3</span><span class="stat-label">Projects<br>Shipped</span></div>
+        <div class="stat-cell"><span class="stat-num">2</span><span class="stat-label">Internships</span></div>
+        <div class="stat-cell"><span class="stat-num">7.67</span><span class="stat-label">CGPA</span></div>
+        <div class="stat-cell"><span class="stat-num">2026</span><span class="stat-label">Graduating</span></div>
       </div>
     </div>
     <div class="hero-scroll-cue"><span class="scroll-line"></span>SCROLL</div>
@@ -153,14 +192,8 @@
       <div class="about-grid">
         <div class="reveal">
           <p class="about-lead">A Computer Science graduate from Kerala, focused on <em>Python &amp; Django</em> — turning real-world problems into working, full-stack applications.</p>
-          <p class="about-copy">I'm currently completing my B.E. in Computer Science &amp; Engineering while working as a Python Full Stack Developer Intern. My interest lies in backend architecture and the MVC/MVT pattern — but I care just as much about the interface people actually touch, which is why I also build responsive, considered frontends for everything I ship.</p>
+          <p class="about-copy">I'm currently completing my B.E. in Computer Science &amp; Engineering while working as a Python Full Stack Developer Intern. My interest lies in backend architecture and the MVC/MVT pattern, but I care just as much about the interface people actually touch, which is why I also build responsive, considered frontends for everything I ship.</p>
           <p class="about-copy">Outside of assigned work, I build complete Django projects end-to-end — data modelling, authentication, CRUD workflows and UI — to keep learning by doing.</p>
-          <div class="about-stats">
-            <div class="glass stat-card reveal"><div class="stat-num">3</div><div class="stat-label">PROJECTS SHIPPED</div></div>
-            <div class="glass stat-card reveal"><div class="stat-num">2</div><div class="stat-label">INTERNSHIPS</div></div>
-            <div class="glass stat-card reveal"><div class="stat-num">7.67</div><div class="stat-label">CGPA</div></div>
-            <div class="glass stat-card reveal"><div class="stat-num">2026</div><div class="stat-label">GRADUATING</div></div>
-          </div>
         </div>
         <div class="glass about-panel reveal">
           <div class="about-panel-row"><span>Role</span><span>Python Full Stack Developer Intern</span></div>
@@ -188,20 +221,20 @@
           <div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">JavaScript</span><span class="skill-tag">SQL</span></div>
         </div>
         <div class="skill-group reveal">
+          <div class="skill-group-head"><h4>Frameworks</h4><span class="count">03</span></div>
+          <div class="skill-tags"><span class="skill-tag">Django</span><span class="skill-tag">Django ORM</span><span class="skill-tag">DRF (fundamentals)</span></div>
+        </div>
+        <div class="skill-group reveal">
           <div class="skill-group-head"><h4>Architecture</h4><span class="count">01</span></div>
           <div class="skill-tags"><span class="skill-tag">MVC / MVT Architecture</span></div>
         </div>
         <div class="skill-group reveal">
-          <div class="skill-group-head"><h4>Frameworks</h4><span class="count">03</span></div>
-          <div class="skill-tags"><span class="skill-tag">Django</span><span class="skill-tag">Django ORM</span><span class="skill-tag">Django REST Framework (fundamentals)</span></div>
-        </div>
-        <div class="skill-group reveal">
           <div class="skill-group-head"><h4>Frontend</h4><span class="count">05</span></div>
-          <div class="skill-tags"><span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">Bootstrap</span><span class="skill-tag">Responsive Web Design</span><span class="skill-tag">JavaScript</span></div>
+          <div class="skill-tags"><span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">Bootstrap</span><span class="skill-tag">Responsive Design</span><span class="skill-tag">JavaScript</span></div>
         </div>
         <div class="skill-group reveal">
           <div class="skill-group-head"><h4>Database</h4><span class="count">03</span></div>
-          <div class="skill-tags"><span class="skill-tag">SQLite</span><span class="skill-tag">SQL</span><span class="skill-tag">Relational DB Design &amp; Queries</span></div>
+          <div class="skill-tags"><span class="skill-tag">SQLite</span><span class="skill-tag">SQL</span><span class="skill-tag">Relational DB Design</span></div>
         </div>
         <div class="skill-group reveal">
           <div class="skill-group-head"><h4>Concepts</h4><span class="count">05</span></div>
@@ -213,9 +246,12 @@
         </div>
       </div>
       <div class="glass learning-card reveal">
-        <h4>CURRENTLY EXPLORING</h4>
-        <div class="learning-tags" id="learning-tags">
-          <span>— to be added —</span>
+        <h4>Currently exploring</h4>
+        <div class="learning-tags">
+          <span>Django REST Framework</span>
+          <span>PostgreSQL</span>
+          <span>Docker &amp; Deployment</span>
+          <span>Pytest</span>
         </div>
       </div>
     </div>
@@ -227,7 +263,7 @@
       <div class="section-head reveal">
         <span class="eyebrow">03 — Selected Projects</span>
         <h2 class="section-title">Things I've built.</h2>
-        <p class="section-sub">Full-stack Django applications, from data modelling to the interface.</p>
+        <p class="section-sub">Full-stack Django applications, from data modelling to the interface. Open one for the full case study.</p>
       </div>
       <div class="project-list" id="project-list"><!-- injected by js/projects.js --></div>
     </div>
@@ -245,7 +281,18 @@
 
         <div class="timeline-item">
           <span class="timeline-dot"></span>
-          <div class="timeline-period">JAN 2026 — PRESENT</div>
+          <div class="timeline-period">DEC 2024 — JAN 2025</div>
+          <h3 class="timeline-role">AI &amp; Machine Learning Intern</h3>
+          <div class="timeline-org">Edu Tantr — Remote</div>
+          <ul class="timeline-list">
+            <li>Assisted in AI/ML research and data-processing tasks using Python.</li>
+            <li>Supported exploratory analysis and technology-focused assignments.</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item is-current">
+          <span class="timeline-dot"></span>
+          <div class="timeline-period">JAN 2026 — PRESENT <span class="timeline-badge">CURRENT</span></div>
           <h3 class="timeline-role">Python Full Stack Developer Intern</h3>
           <div class="timeline-org">Trycode Innovations, Calicut, Kerala</div>
           <ul class="timeline-list">
@@ -255,17 +302,6 @@
             <li>Implemented CRUD functionality and session-based authentication.</li>
             <li>Implemented form validation and debugged URL routing, ForeignKey relationships, session management and file upload functionality.</li>
             <li>Used Git/GitHub for version control and code reviews; tested applications before deployment.</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <span class="timeline-dot"></span>
-          <div class="timeline-period">DEC 2024 — JAN 2025</div>
-          <h3 class="timeline-role">AI &amp; Machine Learning Intern</h3>
-          <div class="timeline-org">Edu Tantr — Remote</div>
-          <ul class="timeline-list">
-            <li>Assisted in AI/ML research and data-processing tasks using Python.</li>
-            <li>Supported exploratory analysis and technology-focused assignments.</li>
           </ul>
         </div>
       </div>
@@ -298,7 +334,7 @@
         </div>
       </div>
 
-      <div class="section-head reveal" style="margin-top:5rem;">
+      <div class="section-head reveal" style="margin-top:3.5rem;">
         <span class="eyebrow">Certifications</span>
       </div>
       <div class="cert-grid" id="cert-grid"><!-- injected --></div>
@@ -308,26 +344,35 @@
   <!-- ============ CONTACT ============ -->
   <section id="contact">
     <div class="wrap">
-      <div class="divider reveal" style="margin-bottom:5rem;"></div>
+      <div class="divider reveal" style="margin-bottom:3.5rem;"></div>
       <span class="eyebrow reveal">06 — Contact</span>
-      <h2 class="contact-headline reveal">LET'S BUILD<br><span class="gradient-text">SOMETHING GREAT.</span></h2>
+      <h2 class="contact-headline reveal">Let's build<br><span class="gradient-text">something great.</span></h2>
       <p class="contact-sub reveal">Have an opportunity, project or idea? Let's connect.</p>
 
-      <div class="contact-details reveal">
-        <div class="contact-item">
-          <span>Email</span>
-          <a href="mailto:anandukrrishna@gmail.com">anandukrrishna@gmail.com</a>
-        </div>
-        <div class="contact-item">
-          <span>Phone</span>
-          <a href="tel:+918921303751">+91 89213 03751</a>
-        </div>
+      <div class="contact-grid reveal">
+        <a class="glass contact-card" href="mailto:anandukrrishna@gmail.com">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="m4 6 8 7 8-7"/></svg>
+          </span>
+          <span>
+            <span class="contact-card-label">Email</span>
+            <span class="contact-card-value">anandukrrishna@gmail.com</span>
+          </span>
+        </a>
+        <a class="glass contact-card" href="tel:+918921303751">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11 11 0 0 0 3.4.55 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .55 3.4 1 1 0 0 1-.25 1z"/></svg>
+          </span>
+          <span>
+            <span class="contact-card-label">Phone</span>
+            <span class="contact-card-value">+91 89213 03751</span>
+          </span>
+        </a>
       </div>
 
       <div class="contact-socials reveal">
         <a class="social-pill" href="https://github.com/anandukrishna-git" target="_blank" rel="noopener">GitHub ↗</a>
         <a class="social-pill" href="https://linkedin.com/in/anandukrishnavp88" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <a class="social-pill" href="mailto:anandukrrishna@gmail.com">Email ↗</a>
       </div>
     </div>
   </section>
@@ -339,7 +384,7 @@
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <h4>ANANDU KRISHNA</h4>
+        <h4>Anandu Krishna</h4>
         <p>Python Developer</p>
       </div>
       <div class="footer-links">
@@ -359,8 +404,7 @@
         </div>
         <div class="footer-col">
           <h6>Resume</h6>
-          <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" target="_blank" rel="noopener">View</a>
-          <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" download>Download</a>
+          <a href="assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf" download>Download PDF</a>
         </div>
       </div>
     </div>
@@ -371,16 +415,14 @@
   </div>
 </footer>
 
-<!-- ============ CASE STUDY OVERLAY ============ -->
-<div class="case-study" id="case-study" aria-hidden="true">
-  <button class="case-close" id="case-close" aria-label="Close case study">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg>
-  </button>
-  <div class="wrap case-hero">
-    <span class="eyebrow" id="case-eyebrow">PROJECT</span>
-    <h3 id="case-title">Project name</h3>
+<!-- ============ SHARED MODAL (Projects + Certifications) ============ -->
+<div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" type="button" aria-label="Close dialog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="modal-body" id="modal-body"><!-- injected by js/projects.js --></div>
   </div>
-  <div class="wrap" id="case-body"><!-- injected by js/projects.js --></div>
 </div>
 
 <!-- ============ SCRIPTS ============ -->

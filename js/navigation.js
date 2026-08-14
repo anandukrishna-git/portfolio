@@ -8,6 +8,7 @@
     const navToggle = document.getElementById('nav-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     const navLinks = document.querySelectorAll('[data-nav]');
+    const mobileLinks = document.querySelectorAll('[data-nav-mobile]');
     const sections = document.querySelectorAll('main section[id]');
 
     // Navbar compact state on scroll
@@ -33,8 +34,9 @@
     navToggle?.addEventListener('click', () => {
       mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
     });
-    document.querySelectorAll('[data-nav-mobile]').forEach(a => {
-      a.addEventListener('click', closeMobileMenu);
+    mobileLinks.forEach(a => a.addEventListener('click', closeMobileMenu));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
     });
 
     // Smooth scroll for in-page anchors (respects reduced motion via CSS scroll-behavior override)
@@ -50,13 +52,14 @@
       });
     });
 
-    // Active link tracking
+    // Active link tracking (desktop + mobile)
     if ('IntersectionObserver' in window && sections.length) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const id = '#' + entry.target.id;
             navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
+            mobileLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
           }
         });
       }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });

@@ -13,25 +13,25 @@
     const loaderFill = document.getElementById('loader-fill');
     let progress = 0;
     const loaderInterval = setInterval(() => {
-      progress += Math.random() * 22;
+      progress += Math.random() * 26;
       if (progress >= 100) progress = 100;
       loaderFill.style.width = progress + '%';
       if (progress >= 100) clearInterval(loaderInterval);
-    }, 90);
+    }, 80);
 
     function finishLoading() {
       loaderFill.style.width = '100%';
       setTimeout(() => {
         loader.classList.add('hidden');
         document.dispatchEvent(new CustomEvent('portfolio:loaded'));
-      }, 300);
+      }, 250);
     }
 
-    window.addEventListener('load', () => setTimeout(finishLoading, 350));
+    window.addEventListener('load', () => setTimeout(finishLoading, 280));
     // Fallback in case 'load' fires very late or never fires
     setTimeout(() => {
       if (!loader.classList.contains('hidden')) finishLoading();
-    }, 2000);
+    }, 1800);
 
     /* ---------------- Scroll progress bar ---------------- */
     const progressBar = document.getElementById('scroll-progress');

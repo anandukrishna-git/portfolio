@@ -1,6 +1,7 @@
 /* ==========================================================================
-   projects.js — single source of truth for project content
-   Edit the `projects` array below to update cards, links and case studies.
+   projects.js — single source of truth for project + certification content,
+   plus the shared modal system used by both.
+   Edit the `projects` / `certifications` arrays below to update content.
    ========================================================================== */
 
 const projects = [
@@ -70,10 +71,30 @@ const projects = [
 ];
 
 const certifications = [
-  { issuer: 'Infosys Springboard', title: 'Python Fundamentals' },
-  { issuer: 'Udemy', title: 'Python Certification' },
-  { issuer: 'AWS Aspire', title: 'Generative AI Revolution' },
-  { issuer: 'NPTEL', title: 'Introduction to IoT 4.0' }
+  {
+    issuer: 'Infosys Springboard',
+    title: 'Python Fundamentals',
+    description: 'Core Python: syntax, data structures, control flow and problem solving.',
+    image: ''
+  },
+  {
+    issuer: 'Udemy',
+    title: 'Python Certification',
+    description: 'Applied Python programming across scripting and application-building exercises.',
+    image: ''
+  },
+  {
+    issuer: 'AWS Aspire',
+    title: 'Generative AI Revolution',
+    description: 'Foundations of generative AI concepts and their practical applications.',
+    image: ''
+  },
+  {
+    issuer: 'NPTEL',
+    title: 'Introduction to IoT 4.0',
+    description: 'Fundamentals of IoT architecture, connected devices and Industry 4.0 concepts.',
+    image: ''
+  }
 ];
 
 function escapeHtml(str) {
@@ -82,6 +103,9 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+/* ---------------------------------------------------------------------- */
+/* Rendering: project cards + certification cards                         */
+/* ---------------------------------------------------------------------- */
 function renderProjects() {
   const list = document.getElementById('project-list');
   if (!list) return;
@@ -102,21 +126,25 @@ function renderProjects() {
         <div class="project-actions">
           <a href="${p.github}" target="_blank" rel="noopener" class="btn btn-outline" data-stop>GitHub ↗</a>
           ${p.liveDemo ? `<a href="${p.liveDemo}" target="_blank" rel="noopener" class="btn btn-outline" data-stop>Live Demo ↗</a>` : ''}
-          <button class="btn btn-ghost" data-open-case="${p.id}">View Case Study →</button>
+          <button class="btn btn-ghost" data-stop type="button">View Case Study →</button>
         </div>
       </div>
     </article>
   `).join('');
 
-  // Stop propagation on external links so the card click handler doesn't also fire
+  // Stop propagation on inner interactive elements so the card click handler
+  // (which also opens the modal) doesn't double-fire.
   list.querySelectorAll('[data-stop]').forEach(el => {
-    el.addEventListener('click', e => e.stopPropagation());
+    el.addEventListener('click', e => {
+      if (el.tagName === 'BUTTON') { openProjectModal(el.closest('.project-card').dataset.project, el); }
+      else { e.stopPropagation(); }
+    });
   });
 
   list.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', () => openCaseStudy(card.dataset.project));
-    card.addEventListener('keypress', e => {
-      if (e.key === 'Enter') openCaseStudy(card.dataset.project);
+    card.addEventListener('click', () => openProjectModal(card.dataset.project, card));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProjectModal(card.dataset.project, card); }
     });
   });
 }
@@ -124,66 +152,135 @@ function renderProjects() {
 function renderCertifications() {
   const grid = document.getElementById('cert-grid');
   if (!grid) return;
-  grid.innerHTML = certifications.map(c => `
-    <div class="glass cert-card reveal">
-      <span class="cert-issuer mono">${escapeHtml(c.issuer)}</span>
-      <h5>${escapeHtml(c.title)}</h5>
-    </div>
+  grid.innerHTML = certifications.map((c, i) => `
+    <button class="glass cert-card reveal" type="button" data-cert-index="${i}" aria-haspopup="dialog">
+      <span class="cert-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/><path d="M8.5 13.5 7 22l5-2.6L17 22l-1.5-8.5"/>
+        </svg>
+      </span>
+      <span>
+        <span class="cert-issuer mono">${escapeHtml(c.issuer)}</span>
+        <h5>${escapeHtml(c.title)}</h5>
+      </span>
+    </button>
   `).join('');
+
+  grid.querySelectorAll('.cert-card').forEach(card => {
+    card.addEventListener('click', () => openCertModal(Number(card.dataset.certIndex), card));
+  });
 }
 
-function openCaseStudy(id) {
-  const p = projects.find(pr => pr.id === id);
-  if (!p) return;
-  const overlay = document.getElementById('case-study');
-  document.getElementById('case-eyebrow').textContent = `PROJECT ${p.number}`;
-  document.getElementById('case-title').textContent = p.name;
+/* ---------------------------------------------------------------------- */
+/* Shared modal system                                                     */
+/* ---------------------------------------------------------------------- */
+let lastFocusedEl = null;
 
-  const blocks = [
-    ['01 — Overview', p.case.overview],
-    ['02 — Problem', p.case.problem],
-    ['03 — Solution', p.case.solution],
-    ['04 — Technologies', p.case.technologies],
-    ['05 — Features', p.case.features],
-    ['06 — My Contribution', p.case.contribution],
-    ['07 — Challenges', p.case.challenges],
-    ['08 — Result', p.case.result]
-  ];
+function closeIconSvg() {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
+}
 
-  // Only render blocks that actually have content — an unfilled field is
-  // simply omitted rather than shown to visitors as "Placeholder" text.
-  const filledBlocks = blocks.filter(([, text]) => text && text.trim().length > 0);
+function openModal(bodyHtml, triggerEl) {
+  const overlay = document.getElementById('modal-overlay');
+  const body = document.getElementById('modal-body');
+  if (!overlay || !body) return;
 
-  document.getElementById('case-body').innerHTML = filledBlocks.map(([label, text]) => `
-    <div class="case-block">
-      <h5>${label}</h5>
-      <p>${escapeHtml(text)}</p>
-    </div>
-  `).join('') + `
-    <div class="case-block" style="border-bottom:1px solid var(--border);display:flex;gap:1rem;flex-wrap:wrap;">
-      <a href="${p.github}" target="_blank" rel="noopener" class="btn btn-outline">GitHub Repository ↗</a>
-      ${p.liveDemo ? `<a href="${p.liveDemo}" target="_blank" rel="noopener" class="btn btn-outline">Live Demo ↗</a>` : ''}
-    </div>
-  `;
+  lastFocusedEl = triggerEl || document.activeElement;
+  body.innerHTML = bodyHtml;
 
   overlay.classList.add('open');
   overlay.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-  document.getElementById('case-close').focus();
+  document.body.classList.add('modal-open');
+
+  const closeBtn = document.getElementById('modal-close');
+  closeBtn?.focus();
 }
 
-function closeCaseStudy() {
-  const overlay = document.getElementById('case-study');
+function closeModal() {
+  const overlay = document.getElementById('modal-overlay');
+  if (!overlay || !overlay.classList.contains('open')) return;
   overlay.classList.remove('open');
   overlay.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
+  document.body.classList.remove('modal-open');
+  if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') lastFocusedEl.focus();
+}
+
+function openProjectModal(id, triggerEl) {
+  const p = projects.find(pr => pr.id === id);
+  if (!p) return;
+
+  const blocks = [
+    ['Overview', p.case.overview],
+    ['Problem', p.case.problem],
+    ['Solution', p.case.solution],
+    ['Features', p.case.features],
+    ['My Contribution', p.case.contribution],
+    ['Challenges', p.case.challenges],
+    ['Result', p.case.result]
+  ].filter(([, text]) => text && text.trim().length > 0);
+
+  const html = `
+    <span class="eyebrow modal-eyebrow">PROJECT ${p.number}</span>
+    <h3 class="modal-title" id="modal-title">${escapeHtml(p.name)}</h3>
+    <p class="modal-tagline">${escapeHtml(p.tagline)}</p>
+    <div class="modal-visual">
+      ${p.image ? `<img src="${p.image}" alt="${escapeHtml(p.name)} preview">` : `
+        <div class="ph">
+          <span class="ph-mark">${escapeHtml(p.name.slice(0, 2).toUpperCase())}</span>
+          <span>Preview coming soon</span>
+        </div>`}
+    </div>
+    <div class="modal-tags">${p.tech.map(t => `<span>${escapeHtml(t)}</span>`).join('')}</div>
+    ${blocks.map(([label, text]) => `
+      <div class="modal-block">
+        <h5>${escapeHtml(label)}</h5>
+        <p>${escapeHtml(text)}</p>
+      </div>
+    `).join('')}
+    <div class="modal-actions">
+      <a href="${p.github}" target="_blank" rel="noopener" class="btn btn-outline">GitHub Repository ↗</a>
+      ${p.liveDemo ? `<a href="${p.liveDemo}" target="_blank" rel="noopener" class="btn btn-primary">Live Demo ↗</a>` : ''}
+    </div>
+  `;
+  openModal(html, triggerEl);
+}
+
+function openCertModal(index, triggerEl) {
+  const c = certifications[index];
+  if (!c) return;
+
+  const html = `
+    <span class="eyebrow modal-eyebrow">CERTIFICATION</span>
+    <h3 class="modal-title" id="modal-title">${escapeHtml(c.title)}</h3>
+    <div class="modal-visual">
+      ${c.image ? `<img src="${c.image}" alt="${escapeHtml(c.title)} certificate">` : `
+        <div class="ph">
+          <span class="ph-mark">${escapeHtml(c.issuer.slice(0, 2).toUpperCase())}</span>
+          <span>Certificate preview coming soon</span>
+        </div>`}
+    </div>
+    <div class="modal-meta">
+      <div><span>Issuer</span><strong>${escapeHtml(c.issuer)}</strong></div>
+    </div>
+    ${c.description ? `
+      <div class="modal-block">
+        <h5>About</h5>
+        <p>${escapeHtml(c.description)}</p>
+      </div>` : ''}
+  `;
+  openModal(html, triggerEl);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   renderProjects();
   renderCertifications();
-  document.getElementById('case-close')?.addEventListener('click', closeCaseStudy);
+
+  const overlay = document.getElementById('modal-overlay');
+  document.getElementById('modal-close')?.addEventListener('click', closeModal);
+  overlay?.addEventListener('mousedown', e => {
+    if (e.target === overlay) closeModal();
+  });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeCaseStudy();
+    if (e.key === 'Escape') closeModal();
   });
 });

@@ -3,8 +3,8 @@
   "short_name": "Anandu Krishna",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#08080c",
-  "theme_color": "#08080c",
+  "background_color": "#08080b",
+  "theme_color": "#08080b",
   "icons": [
     { "src": "/assets/icons/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]

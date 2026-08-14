@@ -1,62 +1,87 @@
 /* ==========================================================================
    RESPONSIVE — mobile-first overrides
-   Breakpoints: 1920, 1200, 1024, 860, 768, 480, 340
+   Audited at: 320, 375, 390, 414, 480, 768, 860, 1024, 1200, 1280, 1440, 1920
    ========================================================================== */
 
 /* Large desktop refinement */
 @media (min-width:1920px){
-  .wrap{max-width:1320px;}
+  .wrap{max-width:1280px;}
 }
 
 /* Laptop */
 @media (max-width:1200px){
-  .hero-grid{grid-template-columns:1.3fr .8fr;}
+  .hero-grid{grid-template-columns:1.25fr .8fr;}
+  .hero-schema{width:52vw;right:-10%;}
 }
 
-/* Tablet */
+/* Tablet landscape */
 @media (max-width:1024px){
-  .nav-links{gap:1.5rem;}
-  .about-grid{grid-template-columns:1fr;gap:3rem;}
+  .nav-links{gap:.15rem;}
+  .nav-links a{padding:.5rem .75rem;}
+  .about-grid{grid-template-columns:1fr;gap:2.2rem;}
+  .about-panel{order:-1;}
   .edu-grid{grid-template-columns:1fr;}
   .project-card{grid-template-columns:1fr;}
   .project-visual{aspect-ratio:16/9;}
+  .skills-groups{grid-template-columns:repeat(2,1fr);}
+  .skill-group:nth-child(3n){border-right:1px solid var(--border);}
+  .skill-group:nth-child(2n){border-right:none;}
+  .skill-group:nth-last-child(-n+3){border-bottom:1px solid var(--border);}
+  .skill-group:nth-last-child(-n+2){border-bottom:none;}
+  .hero-schema{opacity:.35;}
 }
 
-/* Mobile nav breakpoint */
+/* Mobile nav breakpoint / tablet portrait */
 @media (max-width:860px){
   .nav-links{display:none;}
   .nav-toggle{display:flex;}
   .cert-grid{grid-template-columns:1fr;}
-  .skills-groups{columns:1;}
   .hero-grid{grid-template-columns:1fr;}
-  .hero-panel{max-width:480px;margin-top:1rem;}
-  #hero::before{width:340px;height:340px;}
+  .hero-schema{display:none;}
+  .stats-row{flex-wrap:wrap;}
+  .stat-cell{flex:1 1 50%;border-bottom:1px solid var(--border);}
+  .stat-cell:nth-child(2n){border-right:none;}
+  .stat-cell:nth-last-child(-n+2){border-bottom:none;}
+  .contact-grid{grid-template-columns:1fr;}
 }
 
 /* Small tablet / large phone */
 @media (max-width:768px){
-  section{padding:4rem 0;}
-  .hero-cta{flex-direction:column;align-items:flex-start;}
-  .contact-details{gap:2rem;}
+  :root{--section-pad:clamp(2.75rem,10vw,4rem);}
+  .hero-cta{flex-direction:column;align-items:stretch;}
+  .hero-cta .btn{justify-content:center;}
+  .contact-socials{gap:.6rem;}
   .footer-grid{flex-direction:column;}
-  .case-hero{padding:6.5rem 0 2rem;}
-  .about-stats{grid-template-columns:1fr 1fr;gap:.7rem;}
+  .skills-groups{grid-template-columns:1fr;}
+  .skill-group{border-right:none!important;}
+  .skill-group:nth-last-child(-n+2){border-bottom:1px solid var(--border);}
+  .skill-group:last-child{border-bottom:none!important;}
+  .learning-card{flex-direction:column;align-items:flex-start;gap:.8rem;}
+  .modal-close{margin:.9rem .9rem -2.4rem 0;}
+  .modal-body{padding:2.2rem 1.4rem 1.8rem;}
 }
 
 /* Phone */
 @media (max-width:480px){
-  .hero-name{font-size:clamp(2.6rem,13vw,3.6rem);}
-  .btn{padding:.9rem 1.4rem;font-size:.8rem;}
-  .stat-num{font-size:1.7rem;}
-  .contact-headline{font-size:clamp(2.2rem,11vw,3.2rem);}
-  .social-pill{padding:.65rem 1rem;font-size:.76rem;}
-  .mobile-menu a{font-size:1.6rem;}
+  .wrap{padding:0 1.15rem;}
+  .hero-name{font-size:clamp(2.4rem,12vw,3.2rem);}
+  .btn{padding:.85rem 1.3rem;font-size:.78rem;width:100%;}
+  .hero-socials{justify-content:flex-start;}
+  .stat-cell{flex:1 1 100%;border-right:none!important;}
+  .stat-cell:not(:last-child){border-bottom:1px solid var(--border);}
+  .contact-headline{font-size:clamp(2rem,10vw,3rem);}
+  .social-pill{padding:.6rem 1rem;font-size:.74rem;}
+  .mobile-menu a{font-size:1.5rem;}
+  .terminal-row .key{min-width:5.2rem;}
+  .terminal-body{font-size:.78rem;}
+  .modal-title{font-size:1.5rem;}
 }
 
 /* Very small phone */
 @media (max-width:340px){
-  .wrap{padding:0 1rem;}
-  .hero-name{font-size:2.2rem;}
+  .wrap{padding:0 .9rem;}
+  .hero-name{font-size:2rem;}
+  .nav-logo{font-size:.92rem;}
 }
 
 /* Reduced motion */
@@ -68,4 +93,5 @@
     scroll-behavior:auto !important;
   }
   .reveal{opacity:1 !important;transform:none !important;}
+  .hero-schema .edge,.hero-schema .node-glow{animation:none !important;}
 }
