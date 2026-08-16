@@ -8,10 +8,14 @@
      - `video`: a short (~8-12s) muted looping clip used as the live card
        preview and in the modal. Takes priority over `image` if both exist.
      - `image`: a static screenshot fallback preview.
-     - `logo`: a small square logo shown next to the project name.
-     If none of these are supplied, a tasteful neutral placeholder (subtle
-     grid + a generic "window" glyph) is rendered instead — never fake
-     initials, never a "preview coming soon" label.
+     - `logo`: a small square logo — shown ONLY inside the case-study
+       modal next to the project name, not on the card itself.
+     If none of video/image are supplied, a tasteful neutral placeholder
+     (subtle grid + a generic "window" glyph) is rendered instead.
+   - Dummy placeholder previews ship in assets/projects/ and are wired up
+     below so the site looks complete out of the box — swap the `image`
+     path for each project with your real screenshot/video whenever it's
+     ready; nothing else needs to change.
    - The modal only ever shows fields that actually have content — nothing
      is invented.
    ========================================================================== */
@@ -28,7 +32,7 @@ const projects = [
     liveDemo: '',
     logo: '', // placeholder — add path under assets/projects/ once the logo is supplied
     video: '', // placeholder — add path under assets/projects/ once a demo clip is supplied
-    image: '',
+    image: 'assets/projects/signbridge-preview.svg', // dummy placeholder — swap with a real screenshot
     case: {
       overview: 'A communication platform designed with accessibility as the central constraint.',
       features: 'Mobile-first responsive UI, dynamic form handling, MVT architecture.',
@@ -50,7 +54,7 @@ const projects = [
     liveDemo: '',
     logo: '',
     video: '',
-    image: '',
+    image: 'assets/projects/food-waste-preview.svg', // dummy placeholder — swap with a real screenshot
     case: {
       overview: 'A donation platform matching food donors with recipients in need.',
       features: 'Role-based authentication, donor/recipient CRUD workflows.',
@@ -72,7 +76,7 @@ const projects = [
     liveDemo: '', // placeholder — leave empty until a live URL is provided
     logo: '',
     video: '',
-    image: '',
+    image: 'assets/projects/skillhub-preview.svg', // dummy placeholder — swap with a real screenshot
     case: {
       overview: 'A multi-role platform connecting students, companies and internal staff around project listings, applications and feedback.',
       features: 'Project listings, shortlisting workflow, feedback system, 10+ interlinked Django ORM models.',
@@ -85,6 +89,12 @@ const projects = [
   }
 ];
 
+/* Dummy certificate image used as a placeholder for every certification
+   until real certificate scans/screenshots are supplied. Replace any
+   `image` field below with a real path under assets/certs/ — layout and
+   code never need to change. */
+const DUMMY_CERT_IMAGE = 'assets/certs/dummy-certificate.svg';
+
 const certifications = [
   {
     issuer: 'Infosys Springboard',
@@ -92,7 +102,7 @@ const certifications = [
     description: 'Core Python: syntax, data structures, control flow and problem solving.',
     date: '',
     logo: '',
-    image: '',
+    image: DUMMY_CERT_IMAGE,
     certUrl: ''
   },
   {
@@ -101,7 +111,7 @@ const certifications = [
     description: 'Applied Python programming across scripting and application-building exercises.',
     date: '',
     logo: '',
-    image: '',
+    image: DUMMY_CERT_IMAGE,
     certUrl: ''
   },
   {
@@ -110,7 +120,7 @@ const certifications = [
     description: 'Foundations of generative AI concepts and their practical applications.',
     date: '',
     logo: '',
-    image: '',
+    image: DUMMY_CERT_IMAGE,
     certUrl: ''
   },
   {
@@ -119,7 +129,7 @@ const certifications = [
     description: 'Fundamentals of IoT architecture, connected devices and Industry 4.0 concepts.',
     date: '',
     logo: '',
-    image: '',
+    image: DUMMY_CERT_IMAGE,
     certUrl: ''
   }
 ];
@@ -164,15 +174,10 @@ function modalMediaHtml(p) {
   return '';
 }
 
-function logoOrMarkHtml(p) {
-  if (p.logo) {
-    return `<span class="project-logo"><img src="${p.logo}" alt="${escapeHtml(p.name)} logo" loading="lazy"></span>`;
-  }
-  return `<span class="project-mark" aria-hidden="true">${escapeHtml(p.name.slice(0, 2).toUpperCase())}</span>`;
-}
-
 /* ---------------------------------------------------------------------- */
 /* Rendering: project cards + certification cards                         */
+/* Cards intentionally omit the logo/initials mark — it now shows only    */
+/* inside the case-study modal (see openProjectModal).                    */
 /* ---------------------------------------------------------------------- */
 function renderProjects() {
   const list = document.getElementById('project-list');
@@ -181,7 +186,6 @@ function renderProjects() {
     <article class="project-card reveal" data-project="${p.id}" tabindex="0" role="button" aria-label="View case study for ${escapeHtml(p.name)}">
       ${projectMediaHtml(p)}
       <div class="project-body">
-        ${logoOrMarkHtml(p)}
         <div class="project-info">
           <span class="project-num mono">${p.number}</span>
           <h3 class="project-name">${escapeHtml(p.name)}</h3>
@@ -270,8 +274,8 @@ function closeModal() {
 }
 
 /* Project modal — information-focused. Only fields with real content are
-   rendered: media, logo, overview/features/role/problem/solution/
-   challenges/result, tech tags, and real links. */
+   rendered: media, logo (modal-only), overview/features/role/problem/
+   solution/challenges/result, tech tags, and real links. */
 function openProjectModal(id, triggerEl) {
   const p = projects.find(pr => pr.id === id);
   if (!p) return;
@@ -315,8 +319,9 @@ function openProjectModal(id, triggerEl) {
   openModal(html, triggerEl);
 }
 
-/* Certification modal — shows the real certificate image only if the asset
-   exists; otherwise no image area is rendered at all. */
+/* Certification modal — compact, no unnecessary scrolling. Shows the
+   certificate image (dummy placeholder until a real one is supplied) and
+   minimal issuer information only. */
 function openCertModal(index, triggerEl) {
   const c = certifications[index];
   if (!c) return;

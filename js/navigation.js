@@ -19,7 +19,8 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    // Mobile menu toggle
+    // Mobile menu toggle — compact dropdown, closes on Escape, outside
+    // click, link click, or viewport resize past the mobile breakpoint.
     function closeMobileMenu() {
       mobileMenu.classList.remove('open');
       mobileMenu.setAttribute('aria-hidden', 'true');
@@ -34,13 +35,24 @@
       navToggle.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     }
-    navToggle?.addEventListener('click', () => {
+    navToggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
       mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
     });
     // Any link inside the mobile menu (section links, socials, resume) closes it
     mobileMenuAnyLink.forEach(a => a.addEventListener('click', closeMobileMenu));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
+    });
+    // Outside click closes the compact dropdown
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.classList.contains('open')) return;
+      if (mobileMenu.contains(e.target) || navToggle.contains(e.target)) return;
+      closeMobileMenu();
+    });
+    // Resizing past the mobile breakpoint (e.g. rotating a tablet) closes it
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 860 && mobileMenu.classList.contains('open')) closeMobileMenu();
     });
 
     // Smooth scroll for in-page anchors (respects reduced motion via CSS scroll-behavior override)

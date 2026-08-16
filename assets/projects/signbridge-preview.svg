@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280">
+  <defs>
+    <linearGradient id="sb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c7fee" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#3fd7c8" stop-opacity="0.22"/>
+    </linearGradient>
+    <pattern id="sbGrid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M28 0H0V28" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="640" height="280" fill="#111116"/>
+  <rect width="640" height="280" fill="url(#sb)"/>
+  <rect width="640" height="280" fill="url(#sbGrid)"/>
+  <g fill="none" stroke="#3fd7c8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+    <rect x="260" y="96" width="120" height="88" rx="10"/>
+    <path d="M290 130h60M290 150h40"/>
+    <circle cx="300" cy="115" r="4"/>
+    <circle cx="316" cy="115" r="4"/>
+    <circle cx="332" cy="115" r="4"/>
+  </g>
+  <text x="320" y="222" font-family="'JetBrains Mono',monospace" font-size="13" letter-spacing="2" fill="#93939f" text-anchor="middle">SIGNBRIDGE — PREVIEW PLACEHOLDER</text>
+</svg>

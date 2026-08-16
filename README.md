@@ -4,86 +4,87 @@ A static, dependency-free developer portfolio built with plain HTML5, CSS3
 and vanilla JavaScript. No external JS libraries, no CDN dependency beyond
 Google Fonts, no build step.
 
-## What this refinement pass changed
+## Latest refinement pass — what changed
 
-**Hero CTAs**
-- Added a **View Resume** button (same outlined style as "Get In Touch")
-  next to the existing **View Projects →** primary button. It opens the
-  resume PDF in a new tab.
+This pass was a **targeted refinement**, not a redesign. The existing
+visual identity, colors, typography, layout and working functionality
+were preserved; only the specific issues below were addressed.
 
-**Navbar resume button**
-- Changed from "View Resume" to **Download Resume** and it now uses the
-  `download` attribute so clicking it actually downloads the PDF instead
-  of opening it. Same file, same path, same button styling as before —
-  just a different label, icon and behaviour.
+**Resume**
+- Navbar / mobile-menu **Download Resume** button — untouched, it already
+  worked.
+- Hero **View Resume** button now actually works: `js/resume.js` does a
+  quick existence check before opening the PDF in a new tab. If the file
+  hasn't been added yet, the visitor sees a small "not added yet" notice
+  next to the button instead of a blank/broken tab.
 
-**Hero & contact social links**
-- Hero socials (GitHub, LinkedIn, Email) are now icon + label pills
-  instead of plain text, matching the site's existing pill/mono visual
-  language. **WhatsApp** was added alongside them, linking to
-  `https://wa.me/918921303751`, styled identically — no oversized green
-  WhatsApp button.
-- The same icons were added to the contact section's social pills for
-  consistency.
+**Mobile & tablet navigation**
+- The hamburger menu is now a **compact dropdown panel** anchored under
+  the navbar (fixed width, capped height) instead of a full-screen
+  takeover. It still closes on Escape, outside click, any link click, and
+  on viewport resize past the mobile breakpoint.
 
-**Skills section**
-- Fixed the divider logic in `.skills-groups` so the **Concepts** card
-  keeps the same border treatment as its row neighbours, rather than
-  silently losing its bottom divider because of the 7-items-in-3-columns
-  edge case. Only the true last cell in the grid (Tools) now drops its
-  trailing borders.
+**Background**
+- The animated diamond/dot/dashed-line network graphic in the hero has
+  been removed entirely.
+- Replaced with a **subtle, slowly drifting linear gradient** layered
+  into the existing ambient background — lightweight (pure CSS, no
+  canvas/WebGL), respects `prefers-reduced-motion`, and never crops or
+  overflows on any screen size.
 
-**Project order**
-- Reordered to **SignBridge → Food Waste Reducer → SkillHub**, as
-  requested. Numbering (`01`/`02`/`03`) follows the new order.
+**Project cards**
+- Preview media area is now noticeably smaller (`aspect-ratio:16/7`,
+  capped `max-height`) and scales down further at each breakpoint instead
+  of ballooning on mobile.
+- Card padding, type sizes and tag/button sizing were tightened across
+  the board so cards read as compact, not oversized.
+- Dummy placeholder preview images now ship for all three projects
+  (`assets/projects/*-preview.svg`) so the section looks complete before
+  you add real screenshots or clips.
 
-**Project preview media (was: bare info cards)**
-- Every project card now reserves a real preview area (`.project-media`,
-  16:8 aspect ratio) above the card content.
-  - If a project supplies a `video` (short, ~8–12s, muted/looping,
-    intended to autoplay inline), it's used as the live preview, both on
-    the card and in the modal.
-  - Else if an `image` is supplied, that's used as a static preview.
-  - Else a tasteful neutral placeholder renders (soft gradient + faint
-    grid + a generic outline glyph) — **no more initials** like "SI",
-    "FO", "SK" standing in for missing media, and no "preview coming
-    soon" text.
-- Add media by setting a project's `video` or `image` field in
-  `js/projects.js` to a path under `assets/projects/`.
+**Project logo**
+- The small logo/mark icon on the card face has been removed.
+- It's still shown inside the **case-study modal** next to the project
+  name whenever a project supplies a `logo` in `js/projects.js` — nothing
+  about the popup behavior changed.
 
-**Project logos**
-- Each project can now supply a `logo` (small square image). When
-  present it renders in the existing icon-mark slot on the card and next
-  to the title in the modal, at the same size/position the initials mark
-  used to occupy — no layout disruption. Falls back to the initials mark
-  only when no logo is supplied.
+**Education**
+- The CGPA pill no longer stretches to the full width of its container
+  (it was being flex-stretched by its parent) — it now hugs its own text
+  with tight padding, same visual style as before.
 
-**Project & certification modals**
-- The project modal now shows the preview media (if any) at the top,
-  followed by the logo + title row, tagline, tech tags, and only the
-  case-study fields that actually contain content — unchanged principle
-  from before, just extended to include media/logo.
-- Certifications can now optionally carry a `logo`, a `date`, and a
-  `certUrl`. When a `certUrl` is supplied, a **View Certificate** button
-  appears in the modal. Nothing is invented — all of these default to
-  empty and simply don't render.
+**Certifications**
+- Clicking a certification opens a compact modal showing a certificate
+  image and minimal issuer info, sized to avoid unnecessary scrolling.
+- A dummy certificate image now ships at
+  `assets/certs/dummy-certificate.svg` and is wired into every
+  certification so the section looks finished immediately — swap the
+  `image` field per certification in `js/projects.js` with your real
+  scan/screenshot whenever it's ready.
 
-**Education section balance**
-- The B.E. card remains the visually primary item, but `.edu-grid` now
-  stretches both columns to equal height and the HSC/SSLC cards share
-  that height evenly (`flex:1`), instead of leaving a large empty gap
-  next to a much taller B.E. card. No font or content changes.
+**Contact**
+- The phone number card was removed.
+- Social/contact links now read, in order: **WhatsApp → Email → GitHub →
+  LinkedIn** (footer "Connect" column updated to match). The email link
+  uses `mailto:` so it opens the visitor's default mail client.
 
-**Hero stats**
-- Removed the manual `<br>` in "Projects Shipped" so it reads as one
-  phrase on one line wherever there's room, without shrinking the font
-  size. Responsive stacking behaviour on narrow screens is unchanged.
+**Hero buttons (mobile & tablet)**
+- **View Projects**, **View Resume** and **Get In Touch** no longer stack
+  into a tall single column. On tablet/mobile they arrange as a compact
+  two-up row with the third button filling the row beneath — tappable,
+  evenly spaced, not oversized. Desktop layout is unchanged.
 
-**Background / hero schema**
-- Left as-is: a lightweight inline SVG node/edge network (few nodes, thin
-  low-contrast lines, subtle pulsing) rather than a Canvas/WebGL system —
-  this already matches the "refined developer-style network background"
-  direction without adding weight.
+**Social icons (mobile & tablet)**
+- Hero social links (GitHub, LinkedIn, WhatsApp, Email) are centered as a
+  group on mobile/tablet instead of hugging the left edge, with balanced
+  gaps and no overflow.
+
+**Overall responsiveness**
+- Re-checked at 320–1920px. No horizontal scrolling, no cropped or
+  overlapping content, no oversized/undersized elements introduced by
+  this pass. Every JS file passes a syntax check, every HTML/CSS file is
+  tag/brace-balanced, and every asset referenced by the page returns
+  HTTP 200 when served locally.
 
 ## Things to fill in before shipping
 
@@ -96,16 +97,16 @@ nothing was invented as fact. Update these in one place each:
 | Project GitHub repo URLs | `js/projects.js` → each project's `github` field (currently all point to your profile, not per-project repos) |
 | Project live demo URLs | `js/projects.js` → each project's `liveDemo` field (leave `''` to hide the button) |
 | Project preview video (optional) | `js/projects.js` → each project's `video` field (path under `assets/projects/`, short muted looping clip). Takes priority over `image`. |
-| Project preview image (optional) | `js/projects.js` → each project's `image` field (path under `assets/projects/`). Used only if `video` is empty. |
-| Project logo (optional) | `js/projects.js` → each project's `logo` field (small square image, path under `assets/projects/`). Falls back to an initials mark if empty. |
+| Project preview image | `js/projects.js` → each project's `image` field. Ships with a dummy SVG placeholder (`assets/projects/*-preview.svg`) — swap the path for a real screenshot whenever ready. |
+| Project logo (optional, modal-only) | `js/projects.js` → each project's `logo` field (small square image, path under `assets/projects/`). Shown only inside the case-study modal. |
 | Case study details (features, role, problem, solution, challenges, result) | `js/projects.js` → each project's `case` object. Empty fields simply don't render — no placeholder text ships to visitors. |
-| Certificate images (optional) | `js/projects.js` → each certification's `image` field |
+| Certificate image | `js/projects.js` → each certification's `image` field. Ships pointed at the shared dummy `assets/certs/dummy-certificate.svg` — swap in a real scan/screenshot per certification whenever ready. |
 | Certificate logo (optional) | `js/projects.js` → each certification's `logo` field |
 | Certificate date (optional) | `js/projects.js` → each certification's `date` field |
 | Certificate URL (optional) | `js/projects.js` → each certification's `certUrl` field — shows a "View Certificate" button when set |
 | "Currently exploring" tags | `index.html` → `.learning-tags` in the Skills section |
 | Canonical domain, OG image, sitemap URL | `index.html` `<head>`, `sitemap.xml`, `robots.txt` |
-| Profile photo (optional) | `assets/profile/` and reference it in the About section markup |
+| Profile photo (optional) | `assets/profile/` |
 
 ## Run locally
 
@@ -118,8 +119,10 @@ python3 -m http.server 8080
 ```
 
 Then open `http://localhost:8080` (or whatever port your server prints).
-Opening `index.html` directly via `file://` also works, but a local server
-avoids any potential CORS quirks with fonts.
+A local server is required for the "View Resume" existence check (it uses
+`fetch`, which is blocked by browsers under `file://`); if you open
+`index.html` directly via `file://`, that one button falls back to simply
+opening the PDF without the check.
 
 ## Structure
 
@@ -135,16 +138,17 @@ portfolio/
 │   ├── responsive.css     Breakpoints + reduced-motion overrides
 │   └── animations.css     Entrance + stagger transitions
 ├── js/
-│   ├── navigation.js       Navbar state, mobile menu, smooth scroll
+│   ├── navigation.js       Navbar state, compact mobile dropdown, smooth scroll
 │   ├── animations.js       Scroll-reveal (IntersectionObserver) + hero entrance
 │   ├── projects.js         Project + certification data, rendering, and the shared modal
+│   ├── resume.js            "View Resume" existence check + fallback notice
 │   └── main.js             Loader, scroll progress bar, footer year
 └── assets/
     ├── images/              General site imagery (add your own)
-    ├── projects/            Project screenshots/videos/logos (optional — set a
-    │                        project's `video`/`image`/`logo` field in
-    │                        js/projects.js to use one; if left blank, a
-    │                        neutral placeholder renders instead)
+    ├── projects/             Project screenshots/videos/logos — ships with
+    │                         dummy SVG preview placeholders per project
+    ├── certs/                Certificate images — ships with one shared
+    │                         dummy SVG placeholder
     ├── profile/              Profile photo, if used
     ├── icons/                favicon.svg
     └── resume/               Anandukrishna_Python_Developer_Resume.pdf goes here
@@ -154,9 +158,9 @@ portfolio/
 
 - No external JS libraries — everything is vanilla, so there's nothing to
   fail-to-load and leave the page broken.
-- Only the four scripts referenced by `index.html` ship in this package.
-- The hero background is CSS gradients + one small inline SVG — no canvas,
-  no WebGL, negligible cost on low-end mobile devices.
+- The ambient background is CSS gradients only (no canvas, no WebGL,
+  negligible cost on low-end mobile devices) and pauses under
+  `prefers-reduced-motion`.
 - `prefers-reduced-motion` disables all reveal/entrance/background motion.
 
 ## Deployment
