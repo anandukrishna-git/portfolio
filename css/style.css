@@ -388,12 +388,20 @@ section{
   font-size:.98rem;
 }
 .hero-cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.5rem;}
+
+/* Hero social links — icon + label pills, subtle & premium (not text-only) */
 .hero-socials{
-  display:flex;gap:1.2rem;margin-top:1.5rem;
-  font-family:var(--font-mono);font-size:.76rem;
+  display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem;
 }
-.hero-socials a{color:var(--text-3);position:relative;transition:color var(--dur-s);}
-.hero-socials a:hover{color:var(--accent-2);}
+.hero-socials a{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.5rem .9rem .5rem .6rem;
+  border:1px solid var(--border);border-radius:var(--r-pill);
+  font-family:var(--font-mono);font-size:.76rem;color:var(--text-2);
+  transition:color var(--dur-s),border-color var(--dur-s),transform var(--dur-s) var(--ease-out);
+}
+.hero-socials a:hover{color:var(--text-1);border-color:var(--accent-2);transform:translateY(-2px);}
+.hero-socials a svg{width:15px;height:15px;flex:none;color:var(--accent-2);}
 
 /* Terminal / whoami panel — kept compact */
 .terminal{padding:0;overflow:hidden;position:relative;}
@@ -480,7 +488,7 @@ section{
   flex:none;
 }
 .stat-label{color:var(--text-3);font-size:.68rem;font-family:var(--font-mono);letter-spacing:.04em;
-  text-transform:uppercase;line-height:1.3;}
+  text-transform:uppercase;line-height:1.3;white-space:nowrap;}
 
 /* ---------------------------------------------------------------------- */
 /* About                                                                     */
@@ -519,8 +527,16 @@ section{
   border-right:1px solid var(--border);
   border-bottom:1px solid var(--border);
 }
+/* 7 fixed items in a 3-col grid: rightmost column (3,6) has no right divider
+   (the container edge already closes it), and every item that is genuinely
+   last in its column loses its bottom divider. Item 6 (Concepts) sits above
+   empty space in row 3, so it keeps the same bottom divider treatment as its
+   row — it is NOT the last item in its column and must stay visually
+   consistent with the rest of the grid. */
 .skill-group:nth-child(3n){border-right:none;}
-.skill-group:nth-last-child(-n+3){border-bottom:none;}
+.skill-group:last-child{border-right:none;border-bottom:none;}
+
+/* ---------------------------------------------------------------------- */
 .skill-group-head{
   display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;
 }
@@ -549,26 +565,69 @@ section{
 }
 
 /* ---------------------------------------------------------------------- */
-/* Projects — compact info-forward rows, no oversized image placeholder   */
+/* Projects — media-forward cards with a real preview area                */
 /* ---------------------------------------------------------------------- */
 .project-list{display:flex;flex-direction:column;gap:var(--card-gap);}
 .project-card{
   position:relative;
-  padding:clamp(1.3rem,3vw,1.8rem);
-  display:grid;grid-template-columns:auto 1fr;gap:clamp(1rem,3vw,1.8rem);align-items:start;
+  display:flex;flex-direction:column;
   cursor:pointer;
   transition:transform var(--dur-m) var(--ease-out),border-color var(--dur-s);
   border-radius:var(--r-m);
   border:1px solid var(--border);
   background:var(--surface);
+  overflow:hidden;
 }
 .project-card:hover,.project-card:focus-visible{transform:translateY(-3px);border-color:var(--border-strong);}
-.project-mark{
+
+/* Preview media — real video/image when supplied, tasteful placeholder otherwise */
+.project-media{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/8;
+  overflow:hidden;
+  background:linear-gradient(135deg, rgba(var(--accent-rgb),.16), rgba(var(--accent-2-rgb),.1));
+  border-bottom:1px solid var(--border);
+  flex:none;
+}
+.project-media video,
+.project-media img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.project-media.is-placeholder{
+  display:flex;align-items:center;justify-content:center;
+}
+.project-media.is-placeholder svg{
+  width:15%;min-width:34px;max-width:56px;
+  color:rgba(var(--accent-2-rgb),.55);
+  opacity:.8;
+}
+.project-media.is-placeholder::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size:28px 28px;
+  mask-image:radial-gradient(70% 90% at 50% 50%, #000 40%, transparent 90%);
+  -webkit-mask-image:radial-gradient(70% 90% at 50% 50%, #000 40%, transparent 90%);
+}
+
+.project-body{
+  padding:clamp(1.1rem,2.6vw,1.5rem) clamp(1.3rem,3vw,1.8rem) clamp(1.3rem,3vw,1.8rem);
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(1rem,3vw,1.4rem);align-items:start;
+}
+.project-mark,.project-logo{
   flex:none;width:52px;height:52px;border-radius:12px;
   display:flex;align-items:center;justify-content:center;
+}
+.project-mark{
   font-family:var(--font-display);font-weight:600;font-size:1.15rem;
   background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--bg);
 }
+.project-logo{
+  background:var(--surface-solid);border:1px solid var(--border);padding:.5rem;
+}
+.project-logo img{width:100%;height:100%;object-fit:contain;}
 .project-info{min-width:0;}
 .project-num{font-family:var(--font-mono);color:var(--text-3);font-size:.76rem;}
 .project-name{
@@ -602,7 +661,7 @@ section{
 .modal-overlay.open{opacity:1;visibility:visible;}
 .modal-card{
   position:relative;
-  width:100%;max-width:480px;
+  width:100%;max-width:520px;
   max-height:calc(100svh - 3rem);
   background:var(--surface-solid);
   border:1px solid var(--border-strong);
@@ -622,8 +681,22 @@ section{
 }
 .modal-close:hover{border-color:var(--accent-2);color:var(--accent-2);transform:rotate(90deg);}
 .modal-close svg{width:14px;height:14px;}
-.modal-body{padding:1.7rem 1.7rem 1.6rem;overflow-y:auto;max-height:calc(100svh - 3rem);}
+.modal-body{padding:0 0 1.6rem;overflow-y:auto;max-height:calc(100svh - 3rem);}
+.modal-body-inner{padding:1.7rem 1.7rem 0;}
+.modal-media{
+  width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;
+  background:linear-gradient(135deg, rgba(var(--accent-rgb),.16), rgba(var(--accent-2-rgb),.1));
+  border-bottom:1px solid var(--border);
+}
+.modal-media video,.modal-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.modal-header-row{display:flex;align-items:center;gap:1rem;margin-top:1rem;}
+.modal-logo{
+  flex:none;width:48px;height:48px;border-radius:12px;background:var(--surface-solid);
+  border:1px solid var(--border);padding:.45rem;display:flex;align-items:center;justify-content:center;
+}
+.modal-logo img{width:100%;height:100%;object-fit:contain;}
 .modal-eyebrow{margin-bottom:.5rem;padding-right:2.2rem;}
+.modal-media ~ .modal-body-inner .modal-eyebrow{margin-top:0;}
 .modal-title{font-size:clamp(1.35rem,3.2vw,1.7rem);padding-right:2rem;}
 .modal-tagline{color:var(--text-2);margin-top:.5rem;font-size:.92rem;max-width:60ch;}
 .modal-cert-mark{
@@ -698,14 +771,14 @@ body.modal-open{overflow:hidden;}
 /* ---------------------------------------------------------------------- */
 /* Education & Certifications                                                                     */
 /* ---------------------------------------------------------------------- */
-.edu-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:var(--card-gap);}
-.edu-main{padding:1.5rem 1.7rem;}
+.edu-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:var(--card-gap);align-items:stretch;}
+.edu-main{padding:1.5rem 1.7rem;display:flex;flex-direction:column;justify-content:center;}
 .edu-degree{font-size:1.25rem;}
 .edu-school{color:var(--accent-2);margin-top:.3rem;font-family:var(--font-mono);font-size:.84rem;}
 .edu-period{color:var(--text-3);font-family:var(--font-mono);font-size:.76rem;margin-top:.2rem;}
 .edu-cgpa{margin-top:.9rem;display:inline-block;padding:.4rem .85rem;border:1px solid var(--border);border-radius:var(--r-pill);font-family:var(--font-mono);font-size:.76rem;color:var(--text-2);}
 .edu-secondary{display:flex;flex-direction:column;gap:var(--card-gap);}
-.edu-secondary .glass{padding:1rem 1.3rem;}
+.edu-secondary .glass{padding:1.15rem 1.35rem;flex:1;display:flex;flex-direction:column;justify-content:center;}
 .edu-secondary h5{font-size:.92rem;}
 .edu-secondary p{color:var(--text-3);font-family:var(--font-mono);font-size:.74rem;margin-top:.22rem;}
 .edu-secondary .score{color:var(--accent-2);}
@@ -718,15 +791,18 @@ body.modal-open{overflow:hidden;}
   cursor:pointer;
 }
 .cert-card:hover,.cert-card:focus-visible{transform:translateY(-3px);border-color:var(--border-strong);}
-.cert-icon{
+.cert-icon,.cert-logo{
   flex:none;width:40px;height:40px;border-radius:10px;
   display:flex;align-items:center;justify-content:center;
   background:linear-gradient(135deg, rgba(var(--accent-rgb),.22), rgba(var(--accent-2-rgb),.14));
   border:1px solid var(--border);
 }
+.cert-logo{background:var(--surface-solid);padding:.4rem;}
+.cert-logo img{width:100%;height:100%;object-fit:contain;}
 .cert-icon svg{width:17px;height:17px;color:var(--accent-2);}
 .cert-card .cert-issuer{font-family:var(--font-mono);font-size:.68rem;color:var(--accent-2);text-transform:uppercase;letter-spacing:.05em;}
 .cert-card h5{font-size:.92rem;font-weight:500;margin-top:.12rem;}
+.cert-card .cert-date{display:block;color:var(--text-3);font-family:var(--font-mono);font-size:.68rem;margin-top:.15rem;}
 
 /* ---------------------------------------------------------------------- */
 /* Contact                                                                     */
@@ -766,6 +842,7 @@ body.modal-open{overflow:hidden;}
   transition:border-color var(--dur-s),color var(--dur-s),transform var(--dur-s) var(--ease-out);
 }
 .social-pill:hover{border-color:var(--accent-2);color:var(--text-1);transform:translateY(-2px);}
+.social-pill svg{width:15px;height:15px;color:var(--accent-2);}
 
 /* ---------------------------------------------------------------------- */
 /* Footer                                                                     */

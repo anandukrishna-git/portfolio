@@ -1,6 +1,6 @@
 /* ==========================================================================
    RESPONSIVE — mobile-first overrides
-   Audited at: 320, 360, 375, 390, 414, 480, 768, 820, 1024, 1280, 1440, 1920
+   Audited at: 320, 340, 360, 375, 390, 414, 480, 768, 860, 1024, 1200, 1440, 1920
    ========================================================================== */
 
 /* Large desktop refinement */
@@ -24,9 +24,12 @@
   .skills-groups{grid-template-columns:repeat(2,1fr);}
   .skill-group:nth-child(3n){border-right:1px solid var(--border);}
   .skill-group:nth-child(2n){border-right:none;}
+  .skill-group:last-child{border-right:none;}
   .skill-group:nth-last-child(-n+3){border-bottom:1px solid var(--border);}
   .skill-group:nth-last-child(-n+2){border-bottom:none;}
+  .skill-group:last-child{border-bottom:none;}
   .hero-schema{opacity:.32;}
+  .project-media{aspect-ratio:16/8.5;}
 }
 
 /* Mobile nav breakpoint / tablet portrait — header becomes: logo | resume | toggle */
@@ -41,7 +44,7 @@
   .hero-grid{grid-template-columns:1fr;}
   .hero-schema{display:none;}
   .project-card{grid-template-columns:1fr;}
-  .project-mark{width:44px;height:44px;font-size:1rem;}
+  .project-mark,.project-logo{width:44px;height:44px;font-size:1rem;}
   .stats-row{flex-wrap:wrap;}
   .stat-cell{flex:1 1 50%;border-bottom:1px solid var(--border);}
   .stat-cell:nth-child(2n){border-right:none;}
@@ -63,6 +66,8 @@
   .learning-card{flex-direction:column;align-items:flex-start;gap:.7rem;}
   .modal-body{padding:1.5rem 1.3rem 1.4rem;}
   .modal-close{top:.75rem;right:.75rem;}
+  .edu-secondary{flex-direction:row;}
+  .edu-secondary .glass{flex:1;}
 }
 
 /* Phone */
@@ -83,6 +88,8 @@
   .modal-title{font-size:1.35rem;}
   .modal-card{max-width:100%;}
   .nav-logo{font-size:.9rem;}
+  .edu-secondary{flex-direction:column;}
+  .project-media{aspect-ratio:16/10;}
 }
 
 /* Very small phone */
