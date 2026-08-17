@@ -6,12 +6,16 @@
    Notes on design intent:
    - Each project can optionally supply a `video`, an `image`, and a `logo`.
      - `video`: a short (~8-12s) muted looping clip used as the live card
-       preview and in the modal. Takes priority over `image` if both exist.
+       preview. Takes priority over `image` if both exist.
      - `image`: a static screenshot fallback preview.
-     - `logo`: a small square logo — shown ONLY inside the case-study
-       modal next to the project name, not on the card itself.
+     - `logo`: a small square logo. Not shown anywhere currently — the
+       project case-study modal is intentionally information-only (no
+       media, no logo); it lives on the card frame only.
      If none of video/image are supplied, a tasteful neutral placeholder
      (subtle grid + a generic "window" glyph) is rendered instead.
+   - The preview always renders inside a contained, natural 16:9 frame
+     (see .project-media-frame in css/style.css) — never a full-bleed
+     banner — so it stays a moderate size with breathing room around it.
    - Dummy placeholder previews ship in assets/projects/ and are wired up
      below so the site looks complete out of the box — swap the `image`
      path for each project with your real screenshot/video whenever it's
@@ -152,32 +156,25 @@ const PLACEHOLDER_GLYPH = `
 `;
 
 /* ---------------------------------------------------------------------- */
-/* Rendering: project preview media (video > image > placeholder)          */
+/* Rendering: project card preview — always a contained, natural 16:9     */
+/* frame (video > image > placeholder), never a full-bleed banner.        */
 /* ---------------------------------------------------------------------- */
 function projectMediaHtml(p) {
+  let inner;
   if (p.video) {
-    return `<div class="project-media"><video src="${p.video}" muted loop playsinline autoplay preload="metadata" aria-label="${escapeHtml(p.name)} preview"></video></div>`;
+    inner = `<video src="${p.video}" muted loop playsinline autoplay preload="metadata" aria-label="${escapeHtml(p.name)} preview"></video>`;
+  } else if (p.image) {
+    inner = `<img src="${p.image}" alt="${escapeHtml(p.name)} preview" loading="lazy">`;
+  } else {
+    return `<div class="project-media-wrap"><div class="project-media-frame is-placeholder" aria-hidden="true">${PLACEHOLDER_GLYPH}</div></div>`;
   }
-  if (p.image) {
-    return `<div class="project-media"><img src="${p.image}" alt="${escapeHtml(p.name)} preview" loading="lazy"></div>`;
-  }
-  return `<div class="project-media is-placeholder" aria-hidden="true">${PLACEHOLDER_GLYPH}</div>`;
-}
-
-function modalMediaHtml(p) {
-  if (p.video) {
-    return `<div class="modal-media"><video src="${p.video}" muted loop playsinline autoplay preload="metadata" aria-label="${escapeHtml(p.name)} preview"></video></div>`;
-  }
-  if (p.image) {
-    return `<div class="modal-media"><img src="${p.image}" alt="${escapeHtml(p.name)} preview" loading="lazy"></div>`;
-  }
-  return '';
+  return `<div class="project-media-wrap"><div class="project-media-frame">${inner}</div></div>`;
 }
 
 /* ---------------------------------------------------------------------- */
 /* Rendering: project cards + certification cards                         */
-/* Cards intentionally omit the logo/initials mark — it now shows only    */
-/* inside the case-study modal (see openProjectModal).                    */
+/* Cards intentionally omit the logo/initials mark. The project modal is  */
+/* information-only (see openProjectModal) — no media, no logo there.     */
 /* ---------------------------------------------------------------------- */
 function renderProjects() {
   const list = document.getElementById('project-list');
@@ -273,9 +270,10 @@ function closeModal() {
   if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') lastFocusedEl.focus();
 }
 
-/* Project modal — information-focused. Only fields with real content are
-   rendered: media, logo (modal-only), overview/features/role/problem/
-   solution/challenges/result, tech tags, and real links. */
+/* Project modal — information-only case study. Deliberately never shows
+   media (video/image) or the logo — those live on the project card only.
+   Only fields with real content are rendered: overview/features/role/
+   problem/solution/challenges/result, tech tags, and real links. */
 function openProjectModal(id, triggerEl) {
   const p = projects.find(pr => pr.id === id);
   if (!p) return;
@@ -291,14 +289,11 @@ function openProjectModal(id, triggerEl) {
   ].filter(([, text]) => text && text.trim().length > 0);
 
   const hasLinks = p.github || p.liveDemo;
-  const media = modalMediaHtml(p);
 
   const html = `
-    ${media}
     <div class="modal-body-inner">
       <span class="eyebrow modal-eyebrow">Project ${p.number}</span>
       <div class="modal-header-row">
-        ${p.logo ? `<span class="modal-logo"><img src="${p.logo}" alt="${escapeHtml(p.name)} logo"></span>` : ''}
         <h3 class="modal-title" id="modal-title">${escapeHtml(p.name)}</h3>
       </div>
       <p class="modal-tagline">${escapeHtml(p.tagline)}</p>
@@ -321,7 +316,8 @@ function openProjectModal(id, triggerEl) {
 
 /* Certification modal — compact, no unnecessary scrolling. Shows the
    certificate image (dummy placeholder until a real one is supplied) and
-   minimal issuer information only. */
+   minimal issuer information only. Independent of the project modal's
+   "no media" rule above. */
 function openCertModal(index, triggerEl) {
   const c = certifications[index];
   if (!c) return;

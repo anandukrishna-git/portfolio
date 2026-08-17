@@ -10,81 +10,71 @@ This pass was a **targeted refinement**, not a redesign. The existing
 visual identity, colors, typography, layout and working functionality
 were preserved; only the specific issues below were addressed.
 
-**Resume**
-- Navbar / mobile-menu **Download Resume** button — untouched, it already
-  worked.
-- Hero **View Resume** button now actually works: `js/resume.js` does a
-  quick existence check before opening the PDF in a new tab. If the file
-  hasn't been added yet, the visitor sees a small "not added yet" notice
-  next to the button instead of a blank/broken tab.
-
-**Mobile & tablet navigation**
-- The hamburger menu is now a **compact dropdown panel** anchored under
-  the navbar (fixed width, capped height) instead of a full-screen
-  takeover. It still closes on Escape, outside click, any link click, and
-  on viewport resize past the mobile breakpoint.
-
-**Background**
-- The animated diamond/dot/dashed-line network graphic in the hero has
-  been removed entirely.
-- Replaced with a **subtle, slowly drifting linear gradient** layered
-  into the existing ambient background — lightweight (pure CSS, no
-  canvas/WebGL), respects `prefers-reduced-motion`, and never crops or
-  overflows on any screen size.
-
 **Project cards**
-- Preview media area is now noticeably smaller (`aspect-ratio:16/7`,
-  capped `max-height`) and scales down further at each breakpoint instead
-  of ballooning on mobile.
-- Card padding, type sizes and tag/button sizing were tightened across
-  the board so cards read as compact, not oversized.
-- Dummy placeholder preview images now ship for all three projects
-  (`assets/projects/*-preview.svg`) so the section looks complete before
-  you add real screenshots or clips.
+- Preview media is now a natural **16:9** frame instead of the previous
+  wide 16:7 banner.
+- The frame is contained with real padding around it (`.project-media-wrap`
+  → `.project-media-frame`) and capped at `max-width:460px` /
+  `max-height:240px`, so it reads as a moderately sized project
+  screen/video with breathing room — not a full-bleed banner.
+- Real video/image supplied later will fill the same frame with
+  `object-fit:cover`, no distortion.
+- Dummy placeholder previews were re-exported at a 16:9 canvas to match.
 
-**Project logo**
-- The small logo/mark icon on the card face has been removed.
-- It's still shown inside the **case-study modal** next to the project
-  name whenever a project supplies a `logo` in `js/projects.js` — nothing
-  about the popup behavior changed.
+**Project popup / case-study modal**
+- No demo video, no preview image, no logo, no large media header —
+  removed completely. The preview lives on the card only.
+- Opens directly into project information: number, name, tagline, tech
+  tags, then Overview / Key Features / My Role / Problem / Solution /
+  Challenges / Result — only fields that actually have content render.
+- Modal is compact (max-width `640px`), with tightened block spacing so
+  it fits its content naturally instead of growing tall.
+- No forced/visible internal scrollbar: the body can still scroll if a
+  particular case study is genuinely long, but the scrollbar track itself
+  is hidden (same treatment as the page scrollbar below) so it never
+  looks like an awkward inner scroll box.
+- Certification modal is untouched and still shows its certificate image
+  + logo — the "no media" rule applies only to the project modal.
 
-**Education**
-- The CGPA pill no longer stretches to the full width of its container
-  (it was being flex-stretched by its parent) — it now hugs its own text
-  with tight padding, same visual style as before.
+**Contact section**
+- The oversized standalone Email card was removed.
+- Contact now shows four equally-sized pills, in order: **WhatsApp →
+  Email → GitHub → LinkedIn**. Email still uses `mailto:` and opens the
+  visitor's default mail client; nothing else about its behavior changed.
 
-**Certifications**
-- Clicking a certification opens a compact modal showing a certificate
-  image and minimal issuer info, sized to avoid unnecessary scrolling.
-- A dummy certificate image now ships at
-  `assets/certs/dummy-certificate.svg` and is wired into every
-  certification so the section looks finished immediately — swap the
-  `image` field per certification in `js/projects.js` with your real
-  scan/screenshot whenever it's ready.
+**Page scrollbar**
+- The browser's visual scrollbar is hidden (WebKit: `::-webkit-scrollbar`
+  zeroed on `html`; Firefox: `scrollbar-width:none`; legacy Edge/IE:
+  `-ms-overflow-style:none`).
+- The page remains fully scrollable — wheel, trackpad, touch and keyboard
+  scrolling are untouched, and `body { overflow:hidden }` was never used
+  for this. The top scroll-progress bar is unaffected.
+- Other internal scroll areas (e.g. the mobile dropdown menu) keep their
+  normal thin scrollbar — only the page-level scrollbar is hidden.
 
-**Contact**
-- The phone number card was removed.
-- Social/contact links now read, in order: **WhatsApp → Email → GitHub →
-  LinkedIn** (footer "Connect" column updated to match). The email link
-  uses `mailto:` so it opens the visitor's default mail client.
+**Navbar name → profile popover**
+- "ANANDU · KRISHNA" in the navbar is now a button that opens a small
+  glass popover: dummy avatar (`assets/profile/dummy-profile.svg`), name,
+  role, and location with a subtle location icon.
+- Opens on click, closes on a second click, outside click, or Escape.
+  Doesn't block page scroll and doesn't interfere with the mobile menu
+  (opening one closes the other).
+- Styled with the existing glass/border/radius/typography system — no new
+  colors introduced.
 
-**Hero buttons (mobile & tablet)**
-- **View Projects**, **View Resume** and **Get In Touch** no longer stack
-  into a tall single column. On tablet/mobile they arrange as a compact
-  two-up row with the third button filling the row beneath — tappable,
-  evenly spaced, not oversized. Desktop layout is unchanged.
-
-**Social icons (mobile & tablet)**
-- Hero social links (GitHub, LinkedIn, WhatsApp, Email) are centered as a
-  group on mobile/tablet instead of hugging the left edge, with balanced
-  gaps and no overflow.
+**Resume**
+- "View Resume" and "Download Resume" both point at the same file:
+  `assets/resume/Anandukrishna_Python_Developer_Resume.pdf`.
+- `js/resume.js` does a quick existence check (`HEAD` request) before
+  opening the PDF in a new tab. Once the real PDF is placed at that exact
+  path, the check passes and the file opens normally — no false "not
+  added yet" message, no blank tab.
 
 **Overall responsiveness**
-- Re-checked at 320–1920px. No horizontal scrolling, no cropped or
-  overlapping content, no oversized/undersized elements introduced by
-  this pass. Every JS file passes a syntax check, every HTML/CSS file is
-  tag/brace-balanced, and every asset referenced by the page returns
-  HTTP 200 when served locally.
+- Re-checked at 320–1920px, including 375/390/430/768/820/1024/1280.
+  No horizontal scrolling, no cropped or overlapping content. Every JS
+  file passes a syntax check, every HTML/CSS file is tag/brace-balanced,
+  and every asset referenced by the page resolves locally.
 
 ## Things to fill in before shipping
 
@@ -96,17 +86,16 @@ nothing was invented as fact. Update these in one place each:
 | Resume PDF | Drop the file into `assets/resume/` with the exact filename `Anandukrishna_Python_Developer_Resume.pdf` |
 | Project GitHub repo URLs | `js/projects.js` → each project's `github` field (currently all point to your profile, not per-project repos) |
 | Project live demo URLs | `js/projects.js` → each project's `liveDemo` field (leave `''` to hide the button) |
-| Project preview video (optional) | `js/projects.js` → each project's `video` field (path under `assets/projects/`, short muted looping clip). Takes priority over `image`. |
-| Project preview image | `js/projects.js` → each project's `image` field. Ships with a dummy SVG placeholder (`assets/projects/*-preview.svg`) — swap the path for a real screenshot whenever ready. |
-| Project logo (optional, modal-only) | `js/projects.js` → each project's `logo` field (small square image, path under `assets/projects/`). Shown only inside the case-study modal. |
-| Case study details (features, role, problem, solution, challenges, result) | `js/projects.js` → each project's `case` object. Empty fields simply don't render — no placeholder text ships to visitors. |
+| Project preview video (optional) | `js/projects.js` → each project's `video` field (path under `assets/projects/`, short muted looping clip, 16:9). Takes priority over `image`. |
+| Project preview image | `js/projects.js` → each project's `image` field. Ships with a dummy 16:9 SVG placeholder (`assets/projects/*-preview.svg`) — swap the path for a real screenshot whenever ready. |
+| Case study details (features, role, problem, solution, challenges, result) | `js/projects.js` → each project's `case` object. Empty fields simply don't render — no placeholder text ships to visitors. The project popup never shows media or a logo by design. |
 | Certificate image | `js/projects.js` → each certification's `image` field. Ships pointed at the shared dummy `assets/certs/dummy-certificate.svg` — swap in a real scan/screenshot per certification whenever ready. |
 | Certificate logo (optional) | `js/projects.js` → each certification's `logo` field |
 | Certificate date (optional) | `js/projects.js` → each certification's `date` field |
 | Certificate URL (optional) | `js/projects.js` → each certification's `certUrl` field — shows a "View Certificate" button when set |
+| Profile photo | `assets/profile/dummy-profile.svg` is the placeholder shown in the navbar popover — replace the `src` in `index.html` (`#profile-popover`) with your real photo path whenever ready |
 | "Currently exploring" tags | `index.html` → `.learning-tags` in the Skills section |
 | Canonical domain, OG image, sitemap URL | `index.html` `<head>`, `sitemap.xml`, `robots.txt` |
-| Profile photo (optional) | `assets/profile/` |
 
 ## Run locally
 
@@ -138,18 +127,19 @@ portfolio/
 │   ├── responsive.css     Breakpoints + reduced-motion overrides
 │   └── animations.css     Entrance + stagger transitions
 ├── js/
-│   ├── navigation.js       Navbar state, compact mobile dropdown, smooth scroll
+│   ├── navigation.js       Navbar state, compact mobile dropdown, profile popover, smooth scroll
 │   ├── animations.js       Scroll-reveal (IntersectionObserver) + hero entrance
 │   ├── projects.js         Project + certification data, rendering, and the shared modal
 │   ├── resume.js            "View Resume" existence check + fallback notice
 │   └── main.js             Loader, scroll progress bar, footer year
 └── assets/
     ├── images/              General site imagery (add your own)
-    ├── projects/             Project screenshots/videos/logos — ships with
-    │                         dummy SVG preview placeholders per project
+    ├── projects/             Project screenshots/videos — ships with
+    │                         dummy 16:9 SVG preview placeholders per project
     ├── certs/                Certificate images — ships with one shared
     │                         dummy SVG placeholder
-    ├── profile/              Profile photo, if used
+    ├── profile/              Profile photo — ships with a dummy avatar SVG
+    │                         used in the navbar profile popover
     ├── icons/                favicon.svg
     └── resume/               Anandukrishna_Python_Developer_Resume.pdf goes here
 ```

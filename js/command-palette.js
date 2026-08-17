@@ -12,8 +12,8 @@
     { label: 'Go to Contact', key: 'G C', action: () => scrollToId('#contact') },
     { label: 'Open GitHub', key: '↗', action: () => window.open('https://github.com/anandukrishna-git', '_blank', 'noopener') },
     { label: 'Open LinkedIn', key: '↗', action: () => window.open('https://linkedin.com/in/anandukrishnavp88', '_blank', 'noopener') },
-    { label: 'View Resume', key: '↗', action: () => window.open('assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf', '_blank', 'noopener') },
-    { label: 'Download Resume', key: '↓', action: () => triggerDownload('assets/resume/Anandu_Krishna_VP_Python_Developer_Resume.pdf') },
+    { label: 'View Resume', key: '↗', action: () => window.open('assets/resume/Anandukrishna_Python_Developer_Resume.pdf', '_blank', 'noopener') },
+    { label: 'Download Resume', key: '↓', action: () => triggerDownload('assets/resume/Anandukrishna_Python_Developer_Resume.pdf') },
     { label: 'Toggle Theme', key: 'T', action: () => window.__portfolioTheme?.toggle() }
   ];
 
